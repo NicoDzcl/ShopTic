@@ -1,5 +1,6 @@
 package com.example.nicolas.shoptic.core;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Calendar;
  *
  * Created by guilhem on 27/10/16.
  */
-public class List {
+public class List implements Serializable{
     private String name;
     private Calendar reminderDate;
     private Calendar frequency;
