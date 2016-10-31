@@ -3,20 +3,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp">
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp">
 
     <ListView android:id="@id/android:list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00FF00"
         android:layout_weight="1"
         android:drawSelectorOnTop="false"/>
 
     <TextView android:id="@id/android:empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FF0000"
-        android:text="No data"/>
+        android:text="Vous n'avez actuellement aucune liste de courses. Créez-en une en appuyant sur '+'."/>
 </LinearLayout>
 
