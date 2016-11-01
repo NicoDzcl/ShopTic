@@ -1,5 +1,6 @@
 package com.example.nicolas.shoptic;
 
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +18,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    Fragment openedFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +46,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = null;
         Class fragmentClass = ListsListFragment.class;
         try {
-            fragment = (Fragment)fragmentClass.newInstance();
+            openedFragment = (Fragment)fragmentClass.newInstance();
         } catch (InstantiationException|IllegalAccessException e) {
             e.printStackTrace();
         }
 
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, openedFragment).commit();
     }
 
     @Override
@@ -78,12 +80,18 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.action_add_list:
+                if (openedFragment instanceof ListsListFragment){
+                    DialogFragment dialog = new DialogAddList();
+                    dialog.show(getSupportFragmentManager(), "AddListFragment");
+                }
+                return true;
+            case R.id.search:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
