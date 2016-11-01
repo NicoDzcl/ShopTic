@@ -1,14 +1,17 @@
 package com.example.nicolas.shoptic;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.example.nicolas.shoptic.core.List;
 import com.example.nicolas.shoptic.core.Product;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -35,6 +38,21 @@ public class ShopTicApplication extends Application {
             }
         }
         return lists;
+    }
+
+    public void addList(List list){
+        lists.add(list);
+        FileOutputStream fos = null;
+        try {
+            fos = getApplicationContext().openFileOutput(LISTS_SAVE_FILE, Context.MODE_PRIVATE);
+            ObjectOutputStream os = null;
+            os = new ObjectOutputStream(fos);
+            os.writeObject(lists);
+            os.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<Product> getProducts() {
