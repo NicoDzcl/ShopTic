@@ -1,10 +1,14 @@
 package com.example.nicolas.shoptic;
 
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,16 +21,20 @@ import java.util.ArrayList;
  */
 public class ListAdapter extends ArrayAdapter<List> {
 
+    ShopTicApplication app;
+
     public ListAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
+        app = (ShopTicApplication) context.getApplicationContext();
     }
 
     public ListAdapter(Context context, int resource, ArrayList<List> items) {
         super(context, resource, items);
+        app = (ShopTicApplication) context.getApplicationContext();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View v = convertView;
 
@@ -36,11 +44,13 @@ public class ListAdapter extends ArrayAdapter<List> {
             v = vi.inflate(R.layout.listslist_item, null);
         }
 
+
         List p = getItem(position);
 
         if (p != null) {
             TextView tt = (TextView) v.findViewById(R.id.list_name);
             ImageView iv = (ImageView) v.findViewById(R.id.list_image);
+            ImageButton ib = (ImageButton) v.findViewById(R.id.list_button);
 
             if (tt != null) {
                 tt.setText(p.getName());
@@ -54,9 +64,38 @@ public class ListAdapter extends ArrayAdapter<List> {
                 }
             }
 
+            if (ib != null){
+                ib.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showPopup(v, position);
+                    }
+                });
+            }
+
+
         }
 
         return v;
+    }
+
+
+    public void showPopup(final View view, final int position) {
+        PopupMenu popup = new PopupMenu(getContext(), view);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.list_popup, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.list_menu_delete:
+                        app.deleteList(position);
+                        notifyDataSetChanged();
+                }
+                return false;
+            }
+        });
+        popup.show();
     }
 
 }

@@ -42,6 +42,15 @@ public class ShopTicApplication extends Application {
 
     public void addList(List list){
         lists.add(list);
+        saveLists();
+    }
+
+    public void deleteList(int position){
+        lists.remove(position);
+        saveLists();
+    }
+
+    public void saveLists(){
         FileOutputStream fos = null;
         try {
             fos = getApplicationContext().openFileOutput(LISTS_SAVE_FILE, Context.MODE_PRIVATE);

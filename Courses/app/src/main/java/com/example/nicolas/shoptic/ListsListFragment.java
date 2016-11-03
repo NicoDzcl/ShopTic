@@ -28,6 +28,7 @@ public class ListsListFragment extends ListFragment {
 
     private int PICK_IMAGE = 6;
     private ShopTicApplication application;
+    private ListAdapter aa;
 
 
     @Override
@@ -41,9 +42,13 @@ public class ListsListFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         application = (ShopTicApplication)getActivity().getApplicationContext();
         final ArrayList<List> items = application.getLists();
-        final ListAdapter aa = new ListAdapter(getActivity(),
+        aa = new ListAdapter(getActivity(),
                 R.layout.listslist_item, items);
 
         setListAdapter(aa);
+    }
+
+    public ListAdapter getAa() {
+        return aa;
     }
 }

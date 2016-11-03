@@ -7,12 +7,14 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:id="@+id/list_image" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_gravity="center_vertical"
         android:text="Large Text"
         android:id="@+id/list_name"
         android:paddingLeft="15dp"/>
