@@ -1,6 +1,8 @@
 package com.example.nicolas.shoptic;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -89,13 +91,32 @@ public class ListAdapter extends ArrayAdapter<List> {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.list_menu_delete:
-                        app.deleteList(position);
-                        notifyDataSetChanged();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setMessage("Supprimer la liste " + getItem(position).getName() + " ?")
+                                .setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        deleteList(position);
+                                    }
+                                })
+                                .setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                 }
                 return false;
             }
         });
         popup.show();
+    }
+
+    private void deleteList(int position){
+        app.deleteList(position);
+        notifyDataSetChanged();
     }
 
 }

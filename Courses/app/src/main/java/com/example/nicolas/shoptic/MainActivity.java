@@ -127,17 +127,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.search:
                 return true;
             case R.id.list_menu_delete:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Supprimer la liste ?")
-                .setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-
-// 3. Get the AlertDialog from create()
-                AlertDialog dialog = builder.create();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
