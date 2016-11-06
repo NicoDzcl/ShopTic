@@ -2,6 +2,7 @@ package com.example.nicolas.shoptic;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.nicolas.shoptic.core.List;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -62,7 +64,7 @@ public class ListAdapter extends ArrayAdapter<List> {
                 if (p.getImage_path() == null) {
                     iv.setImageResource(R.drawable.ic_lists_list);
                 }else{
-                    iv.setImageURI(p.getImage_path());
+                    iv.setImageURI(Uri.parse(p.getImage_path()));
                 }
             }
 

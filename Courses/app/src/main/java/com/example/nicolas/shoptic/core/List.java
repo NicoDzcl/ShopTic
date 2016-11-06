@@ -11,7 +11,7 @@ import java.util.Calendar;
  */
 public class List implements Serializable{
     private String name;
-    private Uri image_path;
+    private String image_path;
     private Calendar reminderDate;
     private Calendar frequency;
 
@@ -21,14 +21,14 @@ public class List implements Serializable{
      * @param reminderDate: Date of the reminder
      * @param frequency: Frequency (just once, weekly, ...)
      */
-    public List(String name, Uri image_path, Calendar reminderDate, Calendar frequency) {
+    public List(String name, String image_path, Calendar reminderDate, Calendar frequency) {
         this.name = name;
         this.image_path = image_path;
         this.reminderDate = reminderDate;
         this.frequency = frequency;
     }
 
-    public List(String name, Uri image_path) {
+    public List(String name, String image_path) {
         this.name = name;
         this.image_path = image_path;
     }
@@ -41,11 +41,11 @@ public class List implements Serializable{
         this.name = name;
     }
 
-    public Uri getImage_path() {
+    public String getImage_path() {
         return image_path;
     }
 
-    public void setImage_path(Uri image_path) {
+    public void setImage_path(String image_path) {
         this.image_path = image_path;
     }
 }
