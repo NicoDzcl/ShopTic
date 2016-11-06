@@ -21,6 +21,7 @@ public class ShopTicApplication extends Application {
 
     private static final String LISTS_SAVE_FILE = "lists_file";
     private static final String PRODUCT_SAVE_FILE = "product_file";
+    public static final String INTENT_MESSAGE_LIST = "com.example.nicolas.shoptic.LIST";
 
     private ArrayList<List> lists = null;
     private ArrayList<Product> products = null;

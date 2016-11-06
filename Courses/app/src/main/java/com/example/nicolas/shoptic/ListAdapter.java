@@ -2,6 +2,7 @@ package com.example.nicolas.shoptic;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -50,6 +52,7 @@ public class ListAdapter extends ArrayAdapter<List> {
 
 
         List p = getItem(position);
+        final List pFinal = p;
 
         if (p != null) {
             TextView tt = (TextView) v.findViewById(R.id.list_name);
@@ -76,9 +79,8 @@ public class ListAdapter extends ArrayAdapter<List> {
                     }
                 });
             }
-
-
         }
+
 
         return v;
     }
