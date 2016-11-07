@@ -3,6 +3,7 @@ package com.example.nicolas.shoptic;
 import android.app.Application;
 import android.content.Context;
 
+import com.example.nicolas.shoptic.core.Category;
 import com.example.nicolas.shoptic.core.List;
 import com.example.nicolas.shoptic.core.Product;
 
@@ -66,6 +67,20 @@ public class ShopTicApplication extends Application {
     }
 
     public ArrayList<Product> getProducts() {
+        if (products == null){
+            try {
+                FileInputStream fis = getApplicationContext().openFileInput(PRODUCT_SAVE_FILE);
+                ObjectInputStream is = new ObjectInputStream(fis);
+                products = (ArrayList<Product>) is.readObject();
+                is.close();
+                fis.close();
+            } catch (IOException|ClassNotFoundException e) {
+                products = new ArrayList<>();
+                products.add(new Product("Orange", 0., new Category("Alimentaire", false), false));
+                products.add(new Product("Citron", 0., new Category("Alimentaire", false), false));
+                products.add(new Product("Bière", 0., new Category("Alcool", false), false));
+            }
+        }
         return products;
     }
 }

@@ -7,7 +7,7 @@ package com.example.nicolas.shoptic.core;
  */
 public class Product {
     private String name;
-    private float price;
+    private double price;
     private Category category;
     private boolean userDefined;
 
@@ -18,7 +18,7 @@ public class Product {
      * @param category: Category of the product ("alimentaire", ...)
      * @param userDefined: True if the product has been created by the user and so is deletable
      */
-    public Product(String name, float price, Category category, boolean userDefined) {
+    public Product(String name, double price, Category category, boolean userDefined) {
         this.name = name;
         this.price = price;
         this.category = category;
@@ -45,7 +45,7 @@ public class Product {
      * Price getter
      * @return the defined price of the product (e.g. 2.3) TODO:define the units
      */
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -53,7 +53,7 @@ public class Product {
      * Price setter
      * @param price the price of the product (e.g. 3.5) TODO : define the units
      */
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
