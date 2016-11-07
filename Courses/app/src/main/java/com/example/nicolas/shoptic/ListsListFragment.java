@@ -54,7 +54,7 @@ public class ListsListFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
         final List item = items.get(position);
         Intent intent = new Intent(getActivity(), ListActivity.class);
-        intent.putExtra(application.INTENT_MESSAGE_LIST, item);
+        intent.putExtra(ShopTicApplication.INTENT_MESSAGE_LIST, item);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         application.startActivity(intent);
     }
