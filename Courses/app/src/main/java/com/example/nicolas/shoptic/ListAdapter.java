@@ -2,7 +2,6 @@ package com.example.nicolas.shoptic;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
@@ -12,14 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nicolas.shoptic.core.List;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -111,6 +108,27 @@ public class ListAdapter extends ArrayAdapter<List> {
                                 });
                         AlertDialog dialog = builder.create();
                         dialog.show();
+                    case R.id.list_menu_reminder:
+                        CharSequence[] array = {"Date", "E-mail"};
+
+                        AlertDialog.Builder notifier = new AlertDialog.Builder(getContext());
+
+                        notifier.setTitle("Choisir une méthode de notification")
+                                .setItems(array, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if(which == 0){ //case date
+                                            System.out.println(which);
+                                        }
+                                        if(which == 1){ //case E-mail
+                                            System.out.println(which);
+                                        }
+                                    }
+                                });
+
+                        AlertDialog dialog2 = notifier.create();
+                        dialog2.show();
+
                 }
                 return false;
             }
