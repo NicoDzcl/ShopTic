@@ -34,7 +34,6 @@
         android:src="@drawable/ic_more_choices"
         android:background="@null"
         android:padding="8dp"
-
         android:layout_gravity="center_vertical|end" />
 
 </LinearLayout>

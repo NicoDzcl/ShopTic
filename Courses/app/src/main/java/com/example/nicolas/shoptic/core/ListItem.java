@@ -34,4 +34,8 @@ public class ListItem {
         this.product = product;
         this.list = list;
     }
+
+    public List getList() {
+        return list;
+    }
 }

@@ -10,6 +10,7 @@ public class Product {
     private double price;
     private Category category;
     private boolean userDefined;
+    private String imageUri = null;
 
     /**
      * constructor
@@ -82,4 +83,7 @@ public class Product {
         return userDefined;
     }
 
+    public String getImageUri() {
+        return imageUri;
+    }
 }
