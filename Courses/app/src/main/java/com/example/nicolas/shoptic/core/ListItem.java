@@ -38,4 +38,8 @@ public class ListItem {
     public List getList() {
         return list;
     }
+
+    public Product getProduct() {
+        return product;
+    }
 }

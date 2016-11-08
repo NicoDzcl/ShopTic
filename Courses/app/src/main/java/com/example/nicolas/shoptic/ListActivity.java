@@ -1,6 +1,7 @@
 package com.example.nicolas.shoptic;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -50,6 +51,14 @@ public class ListActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+            if (position == 0){
+                Fragment items = new ItemsInListFragment();
+                Bundle args = new Bundle();
+                args.putParcelable("list", (Parcelable) list);
+                items.setArguments(args);
+
+                return items;
+            }
             return new ProductsListFragment();
         }
 
