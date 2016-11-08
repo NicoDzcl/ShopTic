@@ -50,13 +50,27 @@ public class ShopTicApplication extends Application {
         return lists;
     }
 
-    public void addList(List list){
+    public boolean addList(List list){
+        for (List l: lists){
+            if (Objects.equals(l.getName(), list.getName())){
+                return false;
+            }
+        }
         lists.add(list);
         saveLists();
+        return true;
     }
 
     public void deleteList(int position){
-
+        ArrayList<Integer> positionToRemove = new ArrayList<>();
+        for (int i = 0; i < listItems.size(); i++){
+            if (Objects.equals(listItems.get(i).getList().getName(), lists.get(position).getName())){
+                positionToRemove.add(i);
+            }
+        }
+        for (Integer i: positionToRemove){
+            listItems.remove((int)i);
+        }
         lists.remove(position);
         saveLists();
     }

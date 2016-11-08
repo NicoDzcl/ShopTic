@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity
     public AlertDialog.Builder createAddListDialog(){
         LayoutInflater linf = LayoutInflater.from(this);
         final View inflator = linf.inflate(R.layout.dialog_create_list, null);
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         alert.setTitle("Ajouter une nouvelle liste");
         alert.setView(inflator);
@@ -175,7 +175,12 @@ public class MainActivity extends AppCompatActivity
         alert.setPositiveButton("Ajouter", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String s1 = et1.getText().toString();
-                application.addList(new List(s1, dialogAddListImageUri));
+                if (!application.addList(new List(s1, dialogAddListImageUri))){
+                    AlertDialog.Builder alert_name = new AlertDialog.Builder(MainActivity.this);
+                    alert_name.setMessage("Le nom " + s1 + " est déjà pris. Veuillez en choisir un autre");
+                    alert_name.setPositiveButton("OK", null);
+                    alert_name.show();
+                }
                 ((ListsListFragment) openedFragment).getAa().notifyDataSetChanged();
                 dialogAddListImage = null;
                 dialogAddListImageUri = null;
