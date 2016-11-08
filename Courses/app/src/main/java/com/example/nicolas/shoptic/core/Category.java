@@ -1,12 +1,14 @@
 package com.example.nicolas.shoptic.core;
 
+import java.io.Serializable;
+
 /**
  * Category class : The category used to group and manage products more easily
  * (e.g. "Bricolage", "Alimentaire", ...)
  *
  * Created by guilhem on 27/10/16.
  */
-public class Category {
+public class Category implements Serializable{
     private String name;
     private boolean userDefined;
 

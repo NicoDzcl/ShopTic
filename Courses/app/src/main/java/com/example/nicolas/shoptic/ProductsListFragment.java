@@ -1,5 +1,6 @@
 package com.example.nicolas.shoptic;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,16 +13,43 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nicolas.shoptic.core.List;
+
 /**
  * Created by buisangu on 07/11/2016.
  */
 public class ProductsListFragment extends Fragment {
 
     ShopTicApplication application;
+    List list;
+    IOnProductSelected mCallback;
+
+    public interface IOnProductSelected {
+        void OnProductSelected(int position);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (IOnProductSelected) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         application = (ShopTicApplication) getActivity().getApplicationContext();
+        list = (List) getArguments().getSerializable("list");
+
         View v = inflater.inflate(R.layout.fragment_productslist, container, false);
         GridView gridview = (GridView) v.findViewById(R.id.gridview_product);
         gridview.setAdapter(new ProductAdapter(getContext(), 0, application.getProducts()));
@@ -29,8 +57,11 @@ public class ProductsListFragment extends Fragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(getContext(), "" + position,
+                Toast.makeText(getContext(), "Le produit " + application.getProducts().get(position).getName()
+                                + " a été ajouté à la liste " + list.getName(),
                         Toast.LENGTH_SHORT).show();
+                application.addProductToList(application.getProducts().get(position), list);
+                mCallback.OnProductSelected(position);
             }
         });
         return v;

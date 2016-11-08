@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by guilhem on 30/10/16.
@@ -55,6 +56,7 @@ public class ShopTicApplication extends Application {
     }
 
     public void deleteList(int position){
+
         lists.remove(position);
         saveLists();
     }
@@ -106,7 +108,8 @@ public class ShopTicApplication extends Application {
         }
         ArrayList<ListItem> toReturn = new ArrayList<>();
         for (ListItem item: listItems){
-            if (item.getList() == l){
+            System.out.println("ListItem list : " + item.getList() + ", List : " + l);
+            if (Objects.equals(item.getList().getName(), l.getName())){
                 toReturn.add(item);
             }
         }
@@ -114,8 +117,24 @@ public class ShopTicApplication extends Application {
     }
 
     public void addProductToList(Product p, List l){
-
+        listItems.add(new ListItem(1, ListItem.ItemUnit.PIECE, p, l));
+        saveListItems();
     }
+
+    private void saveListItems(){
+        FileOutputStream fos = null;
+        try {
+            fos = getApplicationContext().openFileOutput(LISTITEM_SAVE_FILE, Context.MODE_PRIVATE);
+            ObjectOutputStream os = null;
+            os = new ObjectOutputStream(fos);
+            os.writeObject(listItems);
+            os.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public int getPixelsFromDPs(int dps){
         Resources r = this.getResources();
         int px = (int) (TypedValue.applyDimension(

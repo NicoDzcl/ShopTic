@@ -1,5 +1,7 @@
 package com.example.nicolas.shoptic.core;
 
+import java.io.Serializable;
+
 /**
  * Association class between a list and a product. Used to represent the many to many association
  * and to add details to this association (number of product added and units)
@@ -7,7 +9,7 @@ package com.example.nicolas.shoptic.core;
  * Created by guilhem on 27/10/16.
  */
 
-public class ListItem {
+public class ListItem implements Serializable{
     /**
      * Units available in order to count occurence of a product inside a list
      */

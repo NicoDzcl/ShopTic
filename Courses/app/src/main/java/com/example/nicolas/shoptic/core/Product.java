@@ -1,11 +1,13 @@
 package com.example.nicolas.shoptic.core;
 
+import java.io.Serializable;
+
 /**
  * Product class : used to represent a product (e.g. orange, banane, casserole, tournevis,...)
  *
  * Created by guilhem on 27/10/16.
  */
-public class Product {
+public class Product implements Serializable{
     private String name;
     private double price;
     private Category category;

@@ -23,6 +23,7 @@ public class ItemsInListFragment extends Fragment {
 
         ShopTicApplication application;
         List list;
+    GridView gridview;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,12 +36,22 @@ public class ItemsInListFragment extends Fragment {
             }
 
             View v = inflater.inflate(R.layout.fragment_productslist, container, false);
-            GridView gridview = (GridView) v.findViewById(R.id.gridview_product);
-            gridview.setAdapter(new ProductAdapter(getContext(), 0, products));
+            gridview = (GridView) v.findViewById(R.id.gridview_product);
+            ProductAdapter adapter = new ProductAdapter(getContext(), 0, products);
+            gridview.setAdapter(adapter);
 
             return v;
 
         }
 
+    public void notifyDataSetChanged() {
+        ArrayList<ListItem> listItems = application.getItemsInList(list);
+        ArrayList<Product> products = new ArrayList<>();
+        for (ListItem i: listItems){
+            products.add(i.getProduct());
+        }
+        ProductAdapter adapter = new ProductAdapter(getContext(), 0, products);
+        gridview.setAdapter(adapter);
+    }
 }
 
