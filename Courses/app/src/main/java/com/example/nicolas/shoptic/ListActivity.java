@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 
 import com.example.nicolas.shoptic.core.List;
 
+import java.io.Serializable;
+
 public class ListActivity extends AppCompatActivity {
 
     ShopTicApplication app = null;
@@ -54,7 +56,7 @@ public class ListActivity extends AppCompatActivity {
             if (position == 0){
                 Fragment items = new ItemsInListFragment();
                 Bundle args = new Bundle();
-                args.putParcelable("list", (Parcelable) list);
+                args.putSerializable("list", list);
                 items.setArguments(args);
 
                 return items;

@@ -27,7 +27,7 @@ public class ItemsInListFragment extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             application = (ShopTicApplication) getActivity().getApplicationContext();
-            list = getArguments().getParcelable("list");
+            list = (List) getArguments().getSerializable("list");
             ArrayList<ListItem> listItems = application.getItemsInList(list);
             ArrayList<Product> products = new ArrayList<>();
             for (ListItem i: listItems){
