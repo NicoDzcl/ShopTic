@@ -1,6 +1,8 @@
 package com.example.nicolas.shoptic;
 
+import android.content.ClipData;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,10 +16,13 @@ import android.view.ViewGroup;
 
 import com.example.nicolas.shoptic.core.List;
 
-public class ListActivity extends AppCompatActivity {
+import java.io.Serializable;
+
+public class ListActivity extends AppCompatActivity implements ProductsListFragment.IOnProductSelected{
 
     ShopTicApplication app = null;
     List list = null;
+    ListPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,24 +38,45 @@ public class ListActivity extends AppCompatActivity {
         setTitle(list.getName());
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new ListPagerAdapter(getSupportFragmentManager());
+        adapter = new ListPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    @Override
+    public void OnProductSelected(int position) {
+        Fragment fragment = adapter.getItem(0);
+        if (fragment instanceof ItemsInListFragment){
+            System.out.println("Plop");
+            ((ItemsInListFragment) fragment).notifyDataSetChanged();
+        }
+    }
+
     private class ListPagerAdapter extends FragmentPagerAdapter{
         private final static int NB_TAB = 2;
         private String[] tabTitles = {"Liste", "Produits"};
+        private Fragment[] fragments;
 
         public ListPagerAdapter(FragmentManager fm) {
             super(fm);
+            fragments = new Fragment[NB_TAB];
         }
 
         @Override
         public Fragment getItem(int position) {
-            return new ProductsListFragment();
+            if (fragments[position] == null) {
+                if (position == 0) {
+                    fragments[position] = new ItemsInListFragment();
+                } else {
+                    fragments[position] = new ProductsListFragment();
+                }
+                Bundle args = new Bundle();
+                args.putSerializable("list", list);
+                fragments[position].setArguments(args);
+            }
+            return fragments[position];
         }
 
         @Override

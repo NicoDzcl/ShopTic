@@ -36,31 +36,44 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         app = (ShopTicApplication) context.getApplicationContext();
     }
 
-        public int getCount() {
-            return 3;
-        }
-
         public long getItemId(int position) {
             return 0;
         }
 
         // create a new ImageView for each item referenced by the Adapter
         public View getView(int position, View convertView, ViewGroup parent) {
-            TextView v;
+            View v;
 
             if (convertView == null) {
-                v = new TextView(getContext());
+                LayoutInflater vi = LayoutInflater.from(getContext());
+                v = vi.inflate(R.layout.productslist_item, null);
             }else{
-                v = (TextView) convertView;
+                v = convertView;
             }
 
             Product p = getItem(position);
 
             if (p != null) {
-                v.setText(p.getName());
+                TextView tt = (TextView) v.findViewById(R.id.title_product);
+                ImageView iv = (ImageView) v.findViewById(R.id.thumbnail_product);
+
+                if (tt != null){
+                    tt.setText(p.getName());
+                }
+
+                if (iv != null){
+                    if (p.getImageUri() != null) {
+                        iv.setImageURI(Uri.parse(p.getImageUri()));
+                    }
+                }
+
+                int dp = app.getPixelsFromDPs(75);
+                v.setLayoutParams(new GridView.LayoutParams(dp, dp));
             }
 
 
             return v;
         }
+
+
 }
