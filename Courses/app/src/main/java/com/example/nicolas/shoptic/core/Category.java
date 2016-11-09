@@ -1,5 +1,7 @@
 package com.example.nicolas.shoptic.core;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
@@ -8,7 +10,7 @@ import java.io.Serializable;
  *
  * Created by guilhem on 27/10/16.
  */
-public class Category implements Serializable{
+public class Category implements Serializable, Comparable<Category>{
     private String name;
     private boolean userDefined;
 
@@ -46,4 +48,25 @@ public class Category implements Serializable{
         return userDefined;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null){
+            return false;
+        }
+        if (this == o){
+            return true;
+        }
+        if (!(o instanceof Category)){
+            return false;
+        }
+        return ((Category) o).getName().equals(this.name);
+    }
+
+    @Override
+    public int compareTo(Category another) {
+        if (this.equals(another)){
+            return 0;
+        }
+        return this.name.compareTo(((Category) another).getName());
+    }
 }

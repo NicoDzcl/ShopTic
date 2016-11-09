@@ -19,7 +19,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Created by guilhem on 30/10/16.
@@ -103,6 +107,11 @@ public class ShopTicApplication extends Application {
                 products.add(new Product("Citron", 0., new Category("Alimentaire", false), false));
                 products.add(new Product("Bière", 0., new Category("Alcool", false), false));
                 products.add(new Product("Vin Rouge", 0., new Category("Alcool", false), false));
+                products.add(new Product("Stylo", 0., new Category("Fourniture", false), false));
+                products.add(new Product("Gomme", 0., new Category("Fourniture", false), false));
+                products.add(new Product("Feutre", 0., new Category("Fourniture", false), false));
+                products.add(new Product("Assiette", 0., new Category("Vaisselle", false), false));
+                products.add(new Product("Frites", 0., new Category("Surgelé", false), false));
             }
         }
         return products;
@@ -155,4 +164,19 @@ public class ShopTicApplication extends Application {
                 TypedValue.COMPLEX_UNIT_DIP, dps, r.getDisplayMetrics()));
         return px;
     }
+
+    public TreeMap<Category, Integer> getCategoriesFromItems(ArrayList<Product> products){
+        TreeMap<Category, Integer> ret = new TreeMap<>();
+
+        for (Product p: products){
+            if (ret.containsKey(p.getCategory())){
+                ret.put(p.getCategory(), ret.get(p.getCategory()) + 1);
+            }else{
+                ret.put(p.getCategory(), 1);
+            }
+        }
+        return ret;
+    }
+
+
 }

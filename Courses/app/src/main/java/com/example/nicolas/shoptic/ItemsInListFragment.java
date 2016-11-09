@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.example.nicolas.shoptic.core.List;
 import com.example.nicolas.shoptic.core.ListItem;
 import com.example.nicolas.shoptic.core.Product;
+import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
+import com.tonicartos.widget.stickygridheaders.StickyGridHeadersSimpleArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +25,7 @@ public class ItemsInListFragment extends Fragment {
 
         ShopTicApplication application;
         List list;
-    GridView gridview;
+    StickyGridHeadersGridView gridview;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,8 +38,8 @@ public class ItemsInListFragment extends Fragment {
             }
 
             View v = inflater.inflate(R.layout.fragment_productslist, container, false);
-            gridview = (GridView) v.findViewById(R.id.gridview_product);
-            ProductAdapter adapter = new ProductAdapter(getContext(), 0, products);
+            gridview = (StickyGridHeadersGridView) v.findViewById(R.id.gridview_product);
+            ProductAdapter adapter = new ProductAdapter(getContext(),R.layout.productslist_item, products);
             gridview.setAdapter(adapter);
 
             return v;
