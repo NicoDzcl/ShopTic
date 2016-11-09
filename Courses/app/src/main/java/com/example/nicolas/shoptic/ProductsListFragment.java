@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -23,6 +24,7 @@ public class ProductsListFragment extends Fragment {
     ShopTicApplication application;
     List list;
     IOnProductSelected mCallback;
+    ProductAdapter adapter;
 
     public interface IOnProductSelected {
         void OnProductSelected(int position);
@@ -52,7 +54,8 @@ public class ProductsListFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_productslist, container, false);
         final GridView gridview = (GridView) v.findViewById(R.id.gridview_product);
-        gridview.setAdapter(new ProductAdapter(getContext(), 0, application.getProducts(), application.getProductsInList(list)));
+        adapter = new ProductAdapter(getContext(), 0, application.getProducts(), list);
+        gridview.setAdapter(adapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -68,6 +71,7 @@ public class ProductsListFragment extends Fragment {
                             Toast.LENGTH_SHORT).show();
                     application.addProductToList(application.getProducts().get(position), list);
                 }
+                adapter.notifyDataSetChanged();
                 mCallback.OnProductSelected(position);
             }
         });
