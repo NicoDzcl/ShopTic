@@ -1,7 +1,9 @@
 package com.example.nicolas.shoptic;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
@@ -82,8 +84,17 @@ public class ListAdapter extends ArrayAdapter<List> {
         return v;
     }
 
+    public void onNotifier() {
+        Activity activity = (Activity) getContext();
+        Intent intent = new Intent(activity, NotifierActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        app.startActivity(intent);
+    }
+
 
     public void showPopup(final View view, final int position) {
+
+
         PopupMenu popup = new PopupMenu(getContext(), view);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.list_popup, popup.getMenu());
@@ -108,17 +119,19 @@ public class ListAdapter extends ArrayAdapter<List> {
                                 });
                         AlertDialog dialog = builder.create();
                         dialog.show();
+                        break;
                     case R.id.list_menu_reminder:
                         CharSequence[] array = {"Date", "E-mail"};
+                        onNotifier();
 
-                        AlertDialog.Builder notifier = new AlertDialog.Builder(getContext());
+                        /*AlertDialog.Builder notifier = new AlertDialog.Builder(getContext());
 
                         notifier.setTitle("Choisir une méthode de notification")
                                 .setItems(array, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         if(which == 0){ //case date
-                                            System.out.println(which);
+                                            onNotifier();
                                         }
                                         if(which == 1){ //case E-mail
                                             System.out.println(which);
@@ -127,7 +140,8 @@ public class ListAdapter extends ArrayAdapter<List> {
                                 });
 
                         AlertDialog dialog2 = notifier.create();
-                        dialog2.show();
+                        dialog2.show();*/
+                        break;
 
                 }
                 return false;
@@ -140,5 +154,8 @@ public class ListAdapter extends ArrayAdapter<List> {
         app.deleteList(position);
         notifyDataSetChanged();
     }
+
+
+
 
 }
