@@ -12,32 +12,40 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.nicolas.shoptic.core.Category;
 import com.example.nicolas.shoptic.core.List;
 import com.example.nicolas.shoptic.core.Product;
+import com.tonicartos.widget.stickygridheaders.StickyGridHeadersBaseAdapter;
+import com.tonicartos.widget.stickygridheaders.StickyGridHeadersSimpleAdapter;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * Created by guilhem on 07/11/16.
  */
-public class ProductAdapter extends ArrayAdapter<Product> {
+public class ProductAdapter extends BaseAdapter implements StickyGridHeadersBaseAdapter {
     private Context mContext;
     private ShopTicApplication app;
-
-    public ProductAdapter(Context context, int textViewResourceId) {
-        super(context, textViewResourceId);
-        app = (ShopTicApplication) context.getApplicationContext();
-    }
+    private LayoutInflater inflater;
+    private ArrayList<Product> items;
+    private TreeMap<Category, Integer> itemsPerCategory;
 
     public ProductAdapter(Context context, int resource, ArrayList<Product> items) {
-        super(context, resource, items);
+        mContext = context;
         app = (ShopTicApplication) context.getApplicationContext();
+        inflater = LayoutInflater.from(context);
+        this.items = items;
+        Collections.sort(this.items);
+        itemsPerCategory = app.getCategoriesFromItems(items);
     }
 
         public long getItemId(int position) {
-            return 0;
+            return position;
         }
 
         // create a new ImageView for each item referenced by the Adapter
@@ -45,8 +53,8 @@ public class ProductAdapter extends ArrayAdapter<Product> {
             View v;
 
             if (convertView == null) {
-                LayoutInflater vi = LayoutInflater.from(getContext());
-                v = vi.inflate(R.layout.productslist_item, null);
+                inflater = LayoutInflater.from(mContext);
+                v = inflater.inflate(R.layout.productslist_item, parent, false);
             }else{
                 v = convertView;
             }
@@ -75,5 +83,43 @@ public class ProductAdapter extends ArrayAdapter<Product> {
             return v;
         }
 
+    @Override
+    public int getCount() {
+        return items.size();
+    }
 
+    @Override
+    public Product getItem(int position) {
+        return items.get(position);
+    }
+
+    @Override
+    public int getCountForHeader(int i) {
+        ArrayList<Category> list = new ArrayList<>(itemsPerCategory.keySet());
+        Collections.sort(list);
+        return itemsPerCategory.get(list.get(i));
+    }
+
+    @Override
+    public int getNumHeaders() {
+
+        return itemsPerCategory.size();
+    }
+
+    @Override
+    public View getHeaderView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.productlist_category, parent, false);
+        }
+        TextView cat = (TextView) convertView.findViewById(R.id.product_list_category);
+        ArrayList<Category> list = new ArrayList<>(itemsPerCategory.keySet());
+        Collections.sort(list);
+        Category c = list.get(position);
+
+        cat.setText(c.getName());
+
+
+        return convertView;
+    }
 }
+

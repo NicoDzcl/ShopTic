@@ -1,13 +1,14 @@
 package com.example.nicolas.shoptic.core;
 
 import java.io.Serializable;
+import java.util.Collections;
 
 /**
  * Product class : used to represent a product (e.g. orange, banane, casserole, tournevis,...)
  *
  * Created by guilhem on 27/10/16.
  */
-public class Product implements Serializable{
+public class Product implements Serializable, Comparable<Product>{
     private String name;
     private double price;
     private Category category;
@@ -87,5 +88,27 @@ public class Product implements Serializable{
 
     public String getImageUri() {
         return imageUri;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null){
+            return false;
+        }
+        if (this == o){
+            return true;
+        }
+        if (!(o instanceof Product)){
+            return false;
+        }
+        return ((Product) o).getName().equals(this.name);
+    }
+
+    @Override
+    public int compareTo(Product another) {
+        if (category.compareTo(another.category) != 0){
+            return category.compareTo(another.category);
+        }
+        return name.compareTo(another.getName());
     }
 }
