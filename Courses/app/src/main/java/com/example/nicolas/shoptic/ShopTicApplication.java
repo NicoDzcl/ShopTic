@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
@@ -35,12 +36,12 @@ public class ShopTicApplication extends Application {
     private static final String LISTITEM_SAVE_FILE = "listitem_file";
     public static final String INTENT_MESSAGE_LIST = "com.example.nicolas.shoptic.LIST";
 
-    private ArrayList<List> lists = null;
-    private ArrayList<Product> products = null;
-    private ArrayList<ListItem> listItems = null;
+    private ArrayList<List> lists = new ArrayList<>();
+    private ArrayList<Product> products = new ArrayList<>();
+    private ArrayList<ListItem> listItems = new ArrayList<>();
 
     public ArrayList<List> getLists() {
-        if (lists == null){
+        if (lists.size() == 0){
             try {
                 FileInputStream fis = getApplicationContext().openFileInput(LISTS_SAVE_FILE);
                 ObjectInputStream is = new ObjectInputStream(fis);
@@ -55,8 +56,8 @@ public class ShopTicApplication extends Application {
     }
 
     public boolean addList(List list){
-        for (List l: lists){
-            if (Objects.equals(l.getName(), list.getName())){
+        for (List l: getLists()){
+            if (l.equals(list)){
                 return false;
             }
         }
@@ -68,7 +69,7 @@ public class ShopTicApplication extends Application {
     public void deleteList(int position){
         ArrayList<Integer> positionToRemove = new ArrayList<>();
         for (int i = 0; i < listItems.size(); i++){
-            if (Objects.equals(listItems.get(i).getList().getName(), lists.get(position).getName())){
+            if (listItems.get(i).getList().getName().equals(lists.get(position).getName())){
                 positionToRemove.add(i);
             }
         }
@@ -94,7 +95,7 @@ public class ShopTicApplication extends Application {
     }
 
     public ArrayList<Product> getProducts() {
-        if (products == null){
+        if (products.size() == 0){
             try {
                 FileInputStream fis = getApplicationContext().openFileInput(PRODUCT_SAVE_FILE);
                 ObjectInputStream is = new ObjectInputStream(fis);
@@ -114,11 +115,12 @@ public class ShopTicApplication extends Application {
                 products.add(new Product("Frites", 0., new Category("Surgelé", false), false));
             }
         }
+        Collections.sort(products);
         return products;
     }
 
-    public ArrayList<ListItem> getItemsInList(List l){
-        if (listItems == null){
+    public ArrayList<ListItem> getListItems() {
+        if (listItems.size() == 0){
             try {
                 FileInputStream fis = getApplicationContext().openFileInput(LISTITEM_SAVE_FILE);
                 ObjectInputStream is = new ObjectInputStream(fis);
@@ -129,9 +131,14 @@ public class ShopTicApplication extends Application {
                 listItems = new ArrayList<>();
             }
         }
+        return listItems;
+
+    }
+
+    public ArrayList<ListItem> getItemsInList(List l){
+
         ArrayList<ListItem> toReturn = new ArrayList<>();
-        for (ListItem item: listItems){
-            System.out.println("ListItem list : " + item.getList() + ", List : " + l);
+        for (ListItem item: getListItems()){
             if (Objects.equals(item.getList().getName(), l.getName())){
                 toReturn.add(item);
             }
@@ -139,9 +146,42 @@ public class ShopTicApplication extends Application {
         return toReturn;
     }
 
+    public ArrayList<Product> getProductsInList(List l){
+        ArrayList<Product> toReturn = new ArrayList<>();
+        for (ListItem i: getItemsInList(l)){
+            toReturn.add(i.getProduct());
+        }
+        return toReturn;
+    }
+
+    public boolean isProductInList(Product p, List l){
+        for (ListItem item: getItemsInList(l)){
+            if (item.getProduct().equals(p)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void addProductToList(Product p, List l){
         listItems.add(new ListItem(1, ListItem.ItemUnit.PIECE, p, l));
         saveListItems();
+    }
+
+    public void removeProductFromList(Product p, List l){
+        int positionToRemove = -1;
+        for (int i = 0; i < getListItems().size(); i++){
+            ListItem li = getListItems().get(i);
+            if (p.equals(li.getProduct())
+                    && l.equals(li.getList())){
+                positionToRemove = i;
+                break;
+            }
+        }
+        if (positionToRemove != -1) {
+            listItems.remove(positionToRemove);
+            saveLists();
+        }
     }
 
     private void saveListItems(){
@@ -176,6 +216,15 @@ public class ShopTicApplication extends Application {
             }
         }
         return ret;
+    }
+
+    public void toggleItemInList(Product p, List l){
+        for (ListItem item: getItemsInList(l)){
+            if (item.getProduct().equals(p)){
+                item.toggleChecked();
+                break;
+            }
+        }
     }
 
 

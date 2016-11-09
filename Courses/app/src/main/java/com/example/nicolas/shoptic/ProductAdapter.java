@@ -23,6 +23,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.TreeMap;
 
 /**
@@ -33,15 +34,17 @@ public class ProductAdapter extends BaseAdapter implements StickyGridHeadersBase
     private ShopTicApplication app;
     private LayoutInflater inflater;
     private ArrayList<Product> items;
+    private List linkedList;
     private TreeMap<Category, Integer> itemsPerCategory;
 
-    public ProductAdapter(Context context, int resource, ArrayList<Product> items) {
+    public ProductAdapter(Context context, int resource, ArrayList<Product> items, List l) {
         mContext = context;
         app = (ShopTicApplication) context.getApplicationContext();
         inflater = LayoutInflater.from(context);
         this.items = items;
         Collections.sort(this.items);
         itemsPerCategory = app.getCategoriesFromItems(items);
+        linkedList = l;
     }
 
         public long getItemId(int position) {
@@ -70,12 +73,18 @@ public class ProductAdapter extends BaseAdapter implements StickyGridHeadersBase
                 }
 
                 if (iv != null){
-                    if (p.getImageUri() != null) {
-                        iv.setImageURI(Uri.parse(p.getImageUri()));
+                    if (linkedList != null && app.getProductsInList(linkedList).contains(p)){
+                        iv.setImageResource(R.drawable.ic_remove_product);
+                    }else {
+                        if (p.getImageUri() != null) {
+                            iv.setImageURI(Uri.parse(p.getImageUri()));
+                        }else{
+                            iv.setImageResource(R.drawable.ic_menu_products);
+                        }
                     }
                 }
 
-                int dp = app.getPixelsFromDPs(75);
+                int dp = app.getPixelsFromDPs(85);
                 v.setLayoutParams(new GridView.LayoutParams(dp, dp));
             }
 

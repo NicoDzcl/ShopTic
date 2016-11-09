@@ -39,7 +39,7 @@ public class ItemsInListFragment extends Fragment {
 
             View v = inflater.inflate(R.layout.fragment_productslist, container, false);
             gridview = (StickyGridHeadersGridView) v.findViewById(R.id.gridview_product);
-            ProductAdapter adapter = new ProductAdapter(getContext(),R.layout.productslist_item, products);
+            ProductAdapter adapter = new ProductAdapter(getContext(),R.layout.productslist_item, products, null);
             gridview.setAdapter(adapter);
 
             return v;
@@ -48,11 +48,8 @@ public class ItemsInListFragment extends Fragment {
 
     public void notifyDataSetChanged() {
         ArrayList<ListItem> listItems = application.getItemsInList(list);
-        ArrayList<Product> products = new ArrayList<>();
-        for (ListItem i: listItems){
-            products.add(i.getProduct());
-        }
-        ProductAdapter adapter = new ProductAdapter(getContext(), 0, products);
+        ArrayList<Product> products = application.getProductsInList(list);
+        ProductAdapter adapter = new ProductAdapter(getContext(), 0, products, null);
         gridview.setAdapter(adapter);
     }
 }

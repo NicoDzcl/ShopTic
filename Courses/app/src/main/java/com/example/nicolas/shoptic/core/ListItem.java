@@ -29,12 +29,14 @@ public class ListItem implements Serializable{
     private ItemUnit unit;
     private Product product;
     private List list;
+    private boolean checked;
 
     public ListItem(int quantity, ItemUnit unit, Product product, List list) {
         this.quantity = quantity;
         this.unit = unit;
         this.product = product;
         this.list = list;
+        this.checked = false;
     }
 
     public List getList() {
@@ -43,5 +45,9 @@ public class ListItem implements Serializable{
 
     public Product getProduct() {
         return product;
+    }
+
+    public void toggleChecked(){
+        checked = !checked;
     }
 }

@@ -111,4 +111,9 @@ public class Product implements Serializable, Comparable<Product>{
         }
         return name.compareTo(another.getName());
     }
+
+    @Override
+    public int hashCode() {
+        return getName().hashCode() + getCategory().hashCode();
+    }
 }
