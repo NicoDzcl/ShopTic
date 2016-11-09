@@ -54,7 +54,7 @@ public class ProductsListFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_productslist, container, false);
         final GridView gridview = (GridView) v.findViewById(R.id.gridview_product);
-        adapter = new ProductAdapter(getContext(), 0, application.getProducts(), list);
+        adapter = new ProductAdapter(getContext(), 0, application.getProducts(), list, false);
         gridview.setAdapter(adapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -65,7 +65,7 @@ public class ProductsListFragment extends Fragment {
                                     + " a été supprimé de la liste " + list.getName(),
                             Toast.LENGTH_SHORT).show();
                     application.removeProductFromList(application.getProducts().get(position), list);
-                }else {
+                }else{
                     Toast.makeText(getContext(), "Le produit " + application.getProducts().get(position).getName()
                                     + " a été ajouté à la liste " + list.getName(),
                             Toast.LENGTH_SHORT).show();
