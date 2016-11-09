@@ -23,6 +23,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.TreeMap;
 
 /**
@@ -33,15 +34,19 @@ public class ProductAdapter extends BaseAdapter implements StickyGridHeadersBase
     private ShopTicApplication app;
     private LayoutInflater inflater;
     private ArrayList<Product> items;
+    private ArrayList<Product> itemsInList;
     private TreeMap<Category, Integer> itemsPerCategory;
 
-    public ProductAdapter(Context context, int resource, ArrayList<Product> items) {
+    public ProductAdapter(Context context, int resource, ArrayList<Product> items, ArrayList<Product> itemsInList) {
         mContext = context;
         app = (ShopTicApplication) context.getApplicationContext();
         inflater = LayoutInflater.from(context);
         this.items = items;
         Collections.sort(this.items);
         itemsPerCategory = app.getCategoriesFromItems(items);
+        if (itemsInList == null){
+
+        }
     }
 
         public long getItemId(int position) {

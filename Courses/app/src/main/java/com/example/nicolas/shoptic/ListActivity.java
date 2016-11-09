@@ -47,10 +47,9 @@ public class ListActivity extends AppCompatActivity implements ProductsListFragm
 
     @Override
     public void OnProductSelected(int position) {
-        Fragment fragment = adapter.getItem(0);
-        if (fragment instanceof ItemsInListFragment){
-            System.out.println("Plop");
-            ((ItemsInListFragment) fragment).notifyDataSetChanged();
+        Fragment fragment1 = adapter.getItem(0);
+        if (fragment1 instanceof ItemsInListFragment){
+            ((ItemsInListFragment) fragment1).notifyDataSetChanged();
         }
     }
 

@@ -48,4 +48,18 @@ public class List implements Serializable{
     public void setImage_path(String image_path) {
         this.image_path = image_path;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null){
+            return false;
+        }
+        if (this == o){
+            return true;
+        }
+        if (!(o instanceof List)){
+            return false;
+        }
+        return ((List) o).getName().equals(this.name);
+    }
 }
