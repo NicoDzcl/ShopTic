@@ -37,12 +37,12 @@ public class ShopTicApplication extends Application {
     private static final String LISTITEM_SAVE_FILE = "listitem_file";
     public static final String INTENT_MESSAGE_LIST = "com.example.nicolas.shoptic.LIST";
 
-    private ArrayList<List> lists = new ArrayList<>();
-    private ArrayList<Product> products = new ArrayList<>();
-    private ArrayList<ListItem> listItems = new ArrayList<>();
+    private ArrayList<List> lists = null;
+    private ArrayList<Product> products = null;
+    private ArrayList<ListItem> listItems = null;
 
     public ArrayList<List> getLists() {
-        if (lists.size() == 0){
+        if (lists == null){
             try {
                 FileInputStream fis = getApplicationContext().openFileInput(LISTS_SAVE_FILE);
                 ObjectInputStream is = new ObjectInputStream(fis);
@@ -97,7 +97,7 @@ public class ShopTicApplication extends Application {
     }
 
     public ArrayList<Product> getProducts() {
-        if (products.size() == 0){
+        if (products == null){
             try {
                 FileInputStream fis = getApplicationContext().openFileInput(PRODUCT_SAVE_FILE);
                 ObjectInputStream is = new ObjectInputStream(fis);
@@ -122,7 +122,7 @@ public class ShopTicApplication extends Application {
     }
 
     public ArrayList<ListItem> getListItems() {
-        if (listItems.size() == 0){
+        if (listItems == null){
             try {
                 FileInputStream fis = getApplicationContext().openFileInput(LISTITEM_SAVE_FILE);
                 ObjectInputStream is = new ObjectInputStream(fis);
