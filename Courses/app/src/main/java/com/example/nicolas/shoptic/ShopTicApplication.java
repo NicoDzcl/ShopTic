@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -239,6 +240,59 @@ public class ShopTicApplication extends Application {
         }
         return false;
     }
+
+    public String getQuantityProductInList(Product p, List l){
+        for (ListItem item: getItemsInList(l)){
+            if (item.getProduct().equals(p)){
+                return item.getQuantity() + " " + item.getQuantityUnits();
+            }
+        }
+
+        return "";
+    }
+
+    public int getIntQuantityProductInList(Product p, List l) {
+        for (ListItem item: getItemsInList(l)){
+            if (item.getProduct().equals(p)) {
+                return item.getQuantity();
+            }
+        }
+        return 1;
+    }
+
+    public int getPositionUnitsProductInList(Product p, List l){
+        for (ListItem item: getItemsInList(l)){
+            if (item.getProduct().equals(p)) {
+                //TODO : a corriger (renvoie toujours 0)
+                return getAllQuantityUnits().indexOf(item.getQuantityUnits());
+            }
+        }
+        return 0;
+    }
+
+    public void setQuantityProductInList(Product p, List l, int quantity, String unit){
+        for (ListItem item: getItemsInList(l)){
+            if (item.getProduct().equals(p)){
+                item.setQuantity(quantity);
+                item.setUnit(getUnitFromString(unit));
+                saveListItems();
+                break;
+            }
+        }
+    }
+
+    private ListItem.ItemUnit getUnitFromString(String s){
+        return ListItem.ItemUnit.values()[getAllQuantityUnits().indexOf(s.toLowerCase())];
+    }
+
+    public ArrayList<String> getAllQuantityUnits(){
+        ArrayList<String> toReturn = new ArrayList<>();
+        for (ListItem.ItemUnit u: ListItem.ItemUnit.values()){
+            toReturn.add(u.toString().toLowerCase());
+        }
+        return toReturn;
+    }
+
 
 
 }

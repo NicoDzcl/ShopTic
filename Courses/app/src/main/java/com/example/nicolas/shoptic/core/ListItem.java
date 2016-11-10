@@ -54,4 +54,20 @@ public class ListItem implements Serializable{
     public boolean isChecked() {
         return checked;
     }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getQuantityUnits(){
+        return unit.toString().toLowerCase();
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setUnit(ItemUnit unit) {
+        this.unit = unit;
+    }
 }

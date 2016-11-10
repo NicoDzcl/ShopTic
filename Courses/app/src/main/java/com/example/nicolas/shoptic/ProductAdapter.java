@@ -68,10 +68,19 @@ public class ProductAdapter extends BaseAdapter implements StickyGridHeadersBase
 
             if (p != null) {
                 TextView tt = (TextView) v.findViewById(R.id.title_product);
+                TextView quantity = (TextView) v.findViewById(R.id.quantity_product);
                 ImageView iv = (ImageView) v.findViewById(R.id.thumbnail_product);
 
                 if (tt != null){
                     tt.setText(p.getName());
+                }
+
+                if (quantity != null){
+                    if (isAListRepresented) {
+                        quantity.setText(app.getQuantityProductInList(p, linkedList));
+                    }else{
+                        quantity.setAlpha(0);
+                    }
                 }
 
                 if (iv != null){
@@ -95,6 +104,8 @@ public class ProductAdapter extends BaseAdapter implements StickyGridHeadersBase
                         }
                     }
                 }
+
+
 
                 int dp = app.getPixelsFromDPs(85);
                 v.setLayoutParams(new GridView.LayoutParams(dp, dp));
