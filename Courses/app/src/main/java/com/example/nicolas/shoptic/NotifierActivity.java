@@ -1,9 +1,11 @@
 package com.example.nicolas.shoptic;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -56,8 +58,7 @@ public class NotifierActivity extends AppCompatActivity implements
 
             @Override
             public void onClick(View arg0) {
-                Toast.makeText(getBaseContext(), "Ajout d'une notification", Toast.LENGTH_SHORT).show();
-                createNotification();
+                affNotif();
             }
         });
     }
@@ -111,13 +112,14 @@ public class NotifierActivity extends AppCompatActivity implements
     }
 
     private final void createNotification(){
+        AlarmManager alarms = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
         NotificationCompat.Builder mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_menu_share)
                         .setContentTitle("ShopTic")
                         .setContentText("Vous devez faire vos courses!");
 
-        Intent resultIntent = new Intent(this, MainActivity.class);
+        Intent resultIntent = new Intent(this, Receiver.class);
 
         // Because clicking the notification opens a new ("special") activity, there's
         // no need to create an artificial back stack.
@@ -129,15 +131,51 @@ public class NotifierActivity extends AppCompatActivity implements
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
         mBuilder.setContentIntent(resultPendingIntent);
-
-
-// Sets an ID for the notification
+        // Sets an ID for the notification
         int mNotificationId = 001;
 // Gets an instance of the NotificationManager service
         NotificationManager mNotifyMgr =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 // Builds the notification and issues it.
         mNotifyMgr.notify(mNotificationId, mBuilder.build());
+        alarms.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+5000, resultPendingIntent) ;
+
+
+
+    }
+    
+    public void affNotif(){
+        int seconds = 2;
+// Create an intent that will be wrapped in PendingIntent
+        Intent intent = new Intent(this, Receiver.class);
+
+// Create the pending intent and wrap our intent
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+// Get the alarm manager service and schedule it to go off after 3s
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (seconds * 1000), pendingIntent);
+
+        Toast.makeText(this, "Alarm set in " + seconds + " seconds", Toast.LENGTH_LONG).show();
+
+    }
+
+    public void aff(){
+        AlarmManager alarmMgr = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this.getApplicationContext(), Receiver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 0, intent, 0);
+
+// Set the alarm to start at 8:30 a.m.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 15);
+        calendar.set(Calendar.MINUTE, 3);
+
+// setRepeating() lets you specify a precise custom interval--in this case,
+// 20 minutes.
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                1000 * 60 * 20, alarmIntent);
+
 
     }
 }

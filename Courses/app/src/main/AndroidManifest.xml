@@ -39,6 +39,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nicolas.shoptic.MainActivity" />
         </activity>
+        <receiver android:name=".Receiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
