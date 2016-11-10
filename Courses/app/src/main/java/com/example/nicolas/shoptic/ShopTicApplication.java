@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 import android.util.TypedValue;
 
 import com.example.nicolas.shoptic.core.Category;
@@ -77,6 +78,7 @@ public class ShopTicApplication extends Application {
             listItems.remove((int)i);
         }
         lists.remove(position);
+        saveListItems();
         saveLists();
     }
 
@@ -151,6 +153,7 @@ public class ShopTicApplication extends Application {
         for (ListItem i: getItemsInList(l)){
             toReturn.add(i.getProduct());
         }
+        Collections.sort(toReturn);
         return toReturn;
     }
 
@@ -172,13 +175,13 @@ public class ShopTicApplication extends Application {
         int positionToRemove = -1;
         for (int i = 0; i < getListItems().size(); i++){
             ListItem li = getListItems().get(i);
-            if (p.equals(li.getProduct())
-                    && l.equals(li.getList())){
+            if (p.equals(li.getProduct()) && l.equals(li.getList())){
                 positionToRemove = i;
                 break;
             }
         }
         if (positionToRemove != -1) {
+            listItems = getListItems();
             listItems.remove(positionToRemove);
             saveLists();
         }
@@ -222,9 +225,19 @@ public class ShopTicApplication extends Application {
         for (ListItem item: getItemsInList(l)){
             if (item.getProduct().equals(p)){
                 item.toggleChecked();
+                saveListItems();
                 break;
             }
         }
+    }
+
+    public boolean isItemChecked(Product p, List l){
+        for (ListItem item: getItemsInList(l)){
+            if (item.getProduct().equals(p)){
+                return item.isChecked();
+            }
+        }
+        return false;
     }
 
 

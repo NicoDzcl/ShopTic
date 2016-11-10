@@ -2,6 +2,7 @@ package com.example.nicolas.shoptic;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class ItemsInListFragment extends Fragment {
         ShopTicApplication application;
         List list;
     StickyGridHeadersGridView gridview;
+    ProductAdapter adapter;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,17 +41,23 @@ public class ItemsInListFragment extends Fragment {
 
             View v = inflater.inflate(R.layout.fragment_productslist, container, false);
             gridview = (StickyGridHeadersGridView) v.findViewById(R.id.gridview_product);
-            ProductAdapter adapter = new ProductAdapter(getContext(),R.layout.productslist_item, products, null);
+            adapter = new ProductAdapter(getContext(),R.layout.productslist_item, products, list, true);
             gridview.setAdapter(adapter);
+            gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    application.toggleItemInList(adapter.getItem(position), list);
+                    adapter.notifyDataSetChanged();
+                }
+            });
 
             return v;
 
         }
 
     public void notifyDataSetChanged() {
-        ArrayList<ListItem> listItems = application.getItemsInList(list);
         ArrayList<Product> products = application.getProductsInList(list);
-        ProductAdapter adapter = new ProductAdapter(getContext(), 0, products, null);
+        adapter = new ProductAdapter(getContext(), 0, products, list, true);
         gridview.setAdapter(adapter);
     }
 }

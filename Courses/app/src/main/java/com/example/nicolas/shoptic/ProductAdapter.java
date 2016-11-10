@@ -36,15 +36,17 @@ public class ProductAdapter extends BaseAdapter implements StickyGridHeadersBase
     private ArrayList<Product> items;
     private List linkedList;
     private TreeMap<Category, Integer> itemsPerCategory;
+    private boolean isAListRepresented;
 
-    public ProductAdapter(Context context, int resource, ArrayList<Product> items, List l) {
+    public ProductAdapter(Context context, int resource, ArrayList<Product> items, List linkedList, boolean forList) {
         mContext = context;
         app = (ShopTicApplication) context.getApplicationContext();
         inflater = LayoutInflater.from(context);
         this.items = items;
         Collections.sort(this.items);
         itemsPerCategory = app.getCategoriesFromItems(items);
-        linkedList = l;
+        this.linkedList = linkedList;
+        isAListRepresented = forList;
     }
 
         public long getItemId(int position) {
@@ -73,10 +75,20 @@ public class ProductAdapter extends BaseAdapter implements StickyGridHeadersBase
                 }
 
                 if (iv != null){
-                    if (linkedList != null && app.getProductsInList(linkedList).contains(p)){
-                        iv.setImageResource(R.drawable.ic_remove_product);
-                    }else {
-                        if (p.getImageUri() != null) {
+                    if (!isAListRepresented) {
+                        if (linkedList != null && app.getProductsInList(linkedList).contains(p)) {
+                            iv.setImageResource(R.drawable.ic_remove_product);
+                        } else {
+                            if (p.getImageUri() != null) {
+                                iv.setImageURI(Uri.parse(p.getImageUri()));
+                            } else {
+                                iv.setImageResource(R.drawable.ic_menu_products);
+                            }
+                        }
+                    }else{
+                        if (app.isItemChecked(p, linkedList)){
+                            iv.setImageResource(R.drawable.ic_item_checked);
+                        }else if (p.getImageUri() != null){
                             iv.setImageURI(Uri.parse(p.getImageUri()));
                         }else{
                             iv.setImageResource(R.drawable.ic_menu_products);

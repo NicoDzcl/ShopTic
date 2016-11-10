@@ -50,4 +50,8 @@ public class ListItem implements Serializable{
     public void toggleChecked(){
         checked = !checked;
     }
+
+    public boolean isChecked() {
+        return checked;
+    }
 }
