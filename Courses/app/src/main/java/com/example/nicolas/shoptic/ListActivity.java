@@ -1,24 +1,17 @@
 package com.example.nicolas.shoptic;
 
-import android.content.ClipData;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.nicolas.shoptic.core.List;
 
-import java.io.Serializable;
-
-public class ListActivity extends AppCompatActivity implements ProductsListFragment.IOnProductSelected{
+public class ListActivity extends AppCompatActivity implements ProductsListFragment.IOnProductSelected, ItemsInListFragment.IOnProductRemoved{
 
     ShopTicApplication app = null;
     List list = null;
@@ -46,10 +39,18 @@ public class ListActivity extends AppCompatActivity implements ProductsListFragm
     }
 
     @Override
-    public void OnProductSelected(int position) {
+    public void OnProductSelected() {
         Fragment fragment1 = adapter.getItem(0);
         if (fragment1 instanceof ItemsInListFragment){
             ((ItemsInListFragment) fragment1).notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void OnProductRemoved() {
+        Fragment fragment2 = adapter.getItem(1);
+        if (fragment2 instanceof ProductsListFragment){
+            ((ProductsListFragment) fragment2).adapter.notifyDataSetChanged();
         }
     }
 

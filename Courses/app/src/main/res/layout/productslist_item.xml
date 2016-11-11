@@ -3,6 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+    <TextView
+        android:id="@+id/quantity_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:layout_gravity="top"
+        android:textColor="@android:color/white"
+        android:background="#55000000"
+        android:textSize="12sp"/>
     <ImageView
         android:id="@+id/thumbnail_product"
         android:padding="8dp"
@@ -14,7 +23,7 @@
         android:id="@+id/title_product"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="7dp"
         android:layout_gravity="bottom"
         android:textColor="@android:color/white"
         android:background="#66000000" />
