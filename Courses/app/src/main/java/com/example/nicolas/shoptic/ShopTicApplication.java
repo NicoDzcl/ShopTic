@@ -28,6 +28,7 @@ import java.util.TreeMap;
 /**
  * Created by guilhem on 30/10/16.
  */
+
 public class ShopTicApplication extends Application {
 
     private static final String LISTS_SAVE_FILE = "lists_file";
@@ -289,12 +290,12 @@ public class ShopTicApplication extends Application {
         return toReturn;
     }
 
-    public void createNotification(){
+    public void createNotification(String strContent){
         NotificationCompat.Builder mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_menu_share)
                         .setContentTitle("ShopTic")
-                        .setContentText("Vous devez faire vos courses!");
+                        .setContentText(strContent);
 
         Intent resultIntent = new Intent(this, MainActivity.class);
 

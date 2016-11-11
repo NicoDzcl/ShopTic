@@ -1,7 +1,6 @@
 package com.example.nicolas.shoptic.core;
 
 import java.io.Serializable;
-import android.net.Uri;
 import java.util.Calendar;
 
 /**
@@ -13,7 +12,9 @@ public class List implements Serializable{
     private String name;
     private String image_path;
     private Calendar reminderDate;
-    private Calendar frequency;
+    private Frequency frequency;
+    private int identifier;
+    private String isAlarm = "false";
 
     /**
      * constructor
@@ -21,16 +22,28 @@ public class List implements Serializable{
      * @param reminderDate: Date of the reminder
      * @param frequency: Frequency (just once, weekly, ...)
      */
-    public List(String name, String image_path, Calendar reminderDate, Calendar frequency) {
+    public List(String name, String image_path, Calendar reminderDate, Frequency frequency) {
         this.name = name;
         this.image_path = image_path;
         this.reminderDate = reminderDate;
         this.frequency = frequency;
+
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(System.currentTimeMillis());
+        String identifier = Integer.toString(c.get(Calendar.MONTH)) + Integer.toString(c.get(Calendar.DAY_OF_MONTH)) + Integer.toString(c.get(Calendar.HOUR)) + Integer.toString(c.get(Calendar.MINUTE)) + Integer.toString(c.get(Calendar.SECOND));
+
+        this.identifier = Integer.parseInt(identifier);
     }
 
     public List(String name, String image_path) {
         this.name = name;
         this.image_path = image_path;
+
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(System.currentTimeMillis());
+        String identifier = Integer.toString(c.get(Calendar.MONTH)) + Integer.toString(c.get(Calendar.DAY_OF_MONTH)) + Integer.toString(c.get(Calendar.HOUR)) + Integer.toString(c.get(Calendar.MINUTE)) + Integer.toString(c.get(Calendar.SECOND));
+
+        this.identifier = Integer.parseInt(identifier);
     }
 
     public String getName() {
@@ -61,5 +74,34 @@ public class List implements Serializable{
             return false;
         }
         return ((List) o).getName().equals(this.name);
+    }
+
+    public Calendar getReminderDate() {
+        return reminderDate;
+    }
+
+    public void setReminderDate(Calendar reminderDate) {
+        this.reminderDate = reminderDate;
+    }
+
+    public Frequency getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(Frequency frequency) {
+        this.frequency = frequency;
+    }
+
+    public Integer getIdentifier() {
+        return identifier;
+    }
+
+    public String getAlarm() {
+        return isAlarm;
+    }
+
+    public void setAlarm(String alarm) {
+        isAlarm = alarm;
+        System.out.println(alarm);
     }
 }

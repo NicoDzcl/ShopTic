@@ -13,10 +13,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.nicolas.shoptic.core.Frequency;
+import com.example.nicolas.shoptic.core.List;
 
 import java.util.Calendar;
 
@@ -24,15 +26,18 @@ public class NotifierActivity extends AppCompatActivity implements
         View.OnClickListener {
 
     Button btnDatePicker, btnTimePicker, btnSave;
+    TextView txtLstName, txtIsAlarm;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private int smYear, smMonth, smDay, smHour, smMinute;
     private Frequency fr;
+    private List list;
     private ShopTicApplication app;
     private Spinner s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        list = (List) getIntent().getSerializableExtra(ShopTicApplication.INTENT_MESSAGE_LIST);
         fr = Frequency.ONCE;
         setContentView(R.layout.notifier_activity);
 
@@ -41,6 +46,18 @@ public class NotifierActivity extends AppCompatActivity implements
         btnDatePicker=(Button)findViewById(R.id.btn_date);
         btnTimePicker=(Button)findViewById(R.id.btn_time);
         btnSave = (Button)findViewById(R.id.buttonSave);
+        txtLstName = (TextView)findViewById(R.id.txt_list);
+        txtIsAlarm = (TextView)findViewById(R.id.txt_isAlarm);
+
+        txtLstName.setText(list.getName());
+        System.out.println(list.getAlarm());
+        if (Boolean.parseBoolean(list.getAlarm())){
+
+            txtIsAlarm.setText("Une alarme est programmée pour le " + list.getReminderDate().toString() + "avec pour récurence " + app.getTextFromFrequency(list.getFrequency()));
+        }
+        else {
+            txtIsAlarm.setText("Il n'y a pas d'alarme programmée");
+        }
 
 
         btnDatePicker.setOnClickListener(this);
@@ -127,18 +144,26 @@ public class NotifierActivity extends AppCompatActivity implements
     private final void createAlarm(){
         String str = s.getSelectedItem().toString();
         fr = app.getFrequencyFromText(str);
+        list.setFrequency(fr);
+
 
         AlarmManager alarmMgr = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, Receiver.class);
+        intent.putExtra(ShopTicApplication.INTENT_MESSAGE_LIST, list);
 
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 0, intent, 0);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this.getApplicationContext(), list.getIdentifier(), intent, 0);
 
         // Set the alarm to start at the chosen time.
         Calendar calendar = Calendar.getInstance();
         calendar.set(smYear, smMonth, smDay, smHour, smMinute);
+        list.setReminderDate(calendar);
 
         alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), app.getTimeInMilliForRepeatition(fr), alarmIntent);
-        //alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+
+        calendar.setTimeInMillis(list.getReminderDate().getTimeInMillis());
+
+        list.setAlarm("true");
+        txtIsAlarm.setText("Une alarme est programmée pour le " + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.YEAR) + " à " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + " avec pour récurence " + app.getTextFromFrequency(list.getFrequency()));
 
         Toast.makeText(this, "Alarm programmée pour le" + smDay + "-" + (smMonth + 1) + "-" + smYear + " à " + smHour + ":" + smMinute + " et sera répétée " + app.getTextFromFrequency(fr), Toast.LENGTH_SHORT).show();
     }

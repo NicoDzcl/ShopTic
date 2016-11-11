@@ -84,9 +84,11 @@ public class ListAdapter extends ArrayAdapter<List> {
         return v;
     }
 
-    public void onNotifier() {
+    public void onNotifier(int position) {
+        final List item = app.getLists().get(position);
         Activity activity = (Activity) getContext();
         Intent intent = new Intent(activity, NotifierActivity.class);
+        intent.putExtra(ShopTicApplication.INTENT_MESSAGE_LIST, item);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         app.startActivity(intent);
     }
@@ -122,7 +124,7 @@ public class ListAdapter extends ArrayAdapter<List> {
                         break;
                     case R.id.list_menu_reminder:
                         CharSequence[] array = {"Date", "E-mail"};
-                        onNotifier();
+                        onNotifier(position);
 
                         /*AlertDialog.Builder notifier = new AlertDialog.Builder(getContext());
 

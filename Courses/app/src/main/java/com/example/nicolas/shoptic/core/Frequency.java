@@ -7,5 +7,5 @@ public enum  Frequency {
     ONCE,
     HEBDO,
     MONTHLY,
-    ANNUALLY;
+    ANNUALLY
 }
