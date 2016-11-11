@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.nicolas.shoptic.core.Frequency;
+
 import java.util.Calendar;
 
 public class NotifierActivity extends AppCompatActivity implements
@@ -24,13 +26,17 @@ public class NotifierActivity extends AppCompatActivity implements
     Button btnDatePicker, btnTimePicker, btnSave;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private int smYear, smMonth, smDay, smHour, smMinute;
-    private String array_spinner[];
-    private String array_spinner2[];
+    private Frequency fr;
+    private ShopTicApplication app;
+    private Spinner s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fr = Frequency.ONCE;
         setContentView(R.layout.notifier_activity);
+
+        app = (ShopTicApplication) getApplicationContext();
 
         btnDatePicker=(Button)findViewById(R.id.btn_date);
         btnTimePicker=(Button)findViewById(R.id.btn_time);
@@ -39,12 +45,20 @@ public class NotifierActivity extends AppCompatActivity implements
 
         btnDatePicker.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
-        array_spinner = new String[]{"Une seule fois", "Hebdomadaire", "Mensuelle", "Annuelle"};
-        array_spinner2 = new String[]{"Notification", "E-mail"};
-        Spinner s = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter adapter = new ArrayAdapter(this,
+
+        String[] array_spinner = new String[Frequency.values().length];
+        int i = 0;
+        for (Frequency f: Frequency.values()) {
+            array_spinner[i] = app.getTextFromFrequency(f);
+            i++;
+        }
+
+        s = (Spinner) findViewById(R.id.spinner);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, array_spinner);
+        assert s != null;
         s.setAdapter(adapter);
+
         //ArrayAdapter adapter2 = new ArrayAdapter(this,
         //        android.R.layout.simple_spinner_item, array_spinner2);
         //s2.setAdapter(adapter2);
@@ -111,6 +125,8 @@ public class NotifierActivity extends AppCompatActivity implements
     }
 
     private final void createAlarm(){
+        String str = s.getSelectedItem().toString();
+        fr = app.getFrequencyFromText(str);
 
         AlarmManager alarmMgr = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, Receiver.class);
@@ -121,8 +137,9 @@ public class NotifierActivity extends AppCompatActivity implements
         Calendar calendar = Calendar.getInstance();
         calendar.set(smYear, smMonth, smDay, smHour, smMinute);
 
-        //alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 0, alarmIntent);
-        alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-        Toast.makeText(this, "Alarm programmée pour le" + smDay + "-" + (smMonth + 1) + "-" + smYear + " à " + smHour + ":" + smMinute, Toast.LENGTH_SHORT).show();
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), app.getTimeInMilliForRepeatition(fr), alarmIntent);
+        //alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+
+        Toast.makeText(this, "Alarm programmée pour le" + smDay + "-" + (smMonth + 1) + "-" + smYear + " à " + smHour + ":" + smMinute + " et sera répétée " + app.getTextFromFrequency(fr), Toast.LENGTH_SHORT).show();
     }
 }

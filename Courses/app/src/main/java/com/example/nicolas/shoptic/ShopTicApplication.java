@@ -10,6 +10,7 @@ import android.support.v7.app.NotificationCompat;
 import android.util.TypedValue;
 
 import com.example.nicolas.shoptic.core.Category;
+import com.example.nicolas.shoptic.core.Frequency;
 import com.example.nicolas.shoptic.core.List;
 import com.example.nicolas.shoptic.core.ListItem;
 import com.example.nicolas.shoptic.core.Product;
@@ -295,7 +296,7 @@ public class ShopTicApplication extends Application {
                         .setContentTitle("ShopTic")
                         .setContentText("Vous devez faire vos courses!");
 
-        Intent resultIntent = new Intent(this, Receiver.class);
+        Intent resultIntent = new Intent(this, MainActivity.class);
 
         // Because clicking the notification opens a new ("special") activity, there's
         // no need to create an artificial back stack.
@@ -309,13 +310,51 @@ public class ShopTicApplication extends Application {
         mBuilder.setContentIntent(resultPendingIntent);
         // Sets an ID for the notification
         int mNotificationId = 1;
-// Gets an instance of the NotificationManager service
+        // Gets an instance of the NotificationManager service
         NotificationManager mNotifyMgr =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-// Builds the notification and issues it.
+        // Builds the notification and issues it.
         mNotifyMgr.notify(mNotificationId, mBuilder.build());
-
     }
 
+    public String getTextFromFrequency(Frequency fr){
+        switch (fr){
+            case ONCE:
+                return "Une seule fois";
+            case HEBDO:
+                return "Toutes les semaines";
+            case MONTHLY:
+                return "Tous les mois";
+            case ANNUALLY:
+                return "Tous les ans";
+            default:
+                return "";
+        }
+    }
+
+    public Frequency getFrequencyFromText(String str){
+        for (Frequency f: Frequency.values()) {
+            getTextFromFrequency(f);
+            if(str.equals(getTextFromFrequency(f))){
+                return f;
+            }
+        }
+        return Frequency.ONCE;
+    }
+
+    public int getTimeInMilliForRepeatition(Frequency fr){
+        switch (fr){
+            case ONCE:
+                return 0;
+            case HEBDO:
+                return 1000*60*60*24*7;
+            case MONTHLY:
+                return 1000*60*60*24*7*30;
+            case ANNUALLY:
+                return 1000*60*60*24*365;
+            default:
+                return 0;
+        }
+    }
 
 }
