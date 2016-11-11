@@ -1,19 +1,9 @@
 package com.example.nicolas.shoptic;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,19 +11,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.ImageView;
 
-import com.example.nicolas.shoptic.core.List;
-
+/**
+ * The Main activity, containing the navigation drawer and the frame view used to display main fragment.
+ * The first activity showed on application launch
+ * Gestion du Dialogue [Seeheim]
+ */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int SELECT_PICTURE_DIALOG_NEW_LIST = 1;
     Fragment openedFragment = null;
     ShopTicApplication application;
-    private ImageView dialogAddListImage =null;
-    private String dialogAddListImageUri = null;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,23 +31,19 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        if (drawer != null) {
+            drawer.addDrawerListener(toggle);
+        }
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(this);
+        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         Class fragmentClass = ListsListFragment.class;
         try {
@@ -73,10 +59,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        if (drawer != null) {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -93,20 +81,8 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        AlertDialog.Builder alert = null;
 
         switch (id){
-            case R.id.action_add_list:
-                if (openedFragment instanceof ListsListFragment){
-                    alert = createAddListDialog();
-                }
-
-                if (alert != null){
-                    alert.show();
-                }
-
-
-                return true;
             case R.id.search:
                 return true;
             case R.id.list_menu_delete:
@@ -137,65 +113,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == SELECT_PICTURE_DIALOG_NEW_LIST) {
-                Uri selectedImageUri = data.getData();
-                dialogAddListImage.setImageURI(selectedImageUri);
-                dialogAddListImageUri = selectedImageUri.toString();
-            }
+        if (drawer != null) {
+            drawer.closeDrawer(GravityCompat.START);
         }
-    }
-
-    public AlertDialog.Builder createAddListDialog(){
-        LayoutInflater linf = LayoutInflater.from(this);
-        final View inflator = linf.inflate(R.layout.dialog_create_list, null);
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        alert.setTitle("Ajouter une nouvelle liste");
-        alert.setView(inflator);
-
-        final EditText et1 = (EditText) inflator.findViewById(R.id.dialog_list_name);
-        dialogAddListImage = (ImageView) inflator.findViewById(R.id.dialog_image_list);
-
-        dialogAddListImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE_DIALOG_NEW_LIST);
-            }
-        });
-
-        alert.setPositiveButton("Ajouter", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String s1 = et1.getText().toString();
-                if (!application.addList(new List(s1, dialogAddListImageUri))){
-                    AlertDialog.Builder alert_name = new AlertDialog.Builder(MainActivity.this);
-                    alert_name.setMessage("Le nom " + s1 + " est déjà pris. Veuillez en choisir un autre");
-                    alert_name.setPositiveButton("OK", null);
-                    alert_name.show();
-                }
-                ((ListsListFragment) openedFragment).getAa().notifyDataSetChanged();
-                dialogAddListImage = null;
-                dialogAddListImageUri = null;
-
-            }
-        });
-
-        alert.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dialog.cancel();
-                dialogAddListImage = null;
-                dialogAddListImageUri = null;
-            }
-        });
-        return alert;
+        return true;
     }
 
 }

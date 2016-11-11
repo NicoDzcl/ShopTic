@@ -26,19 +26,26 @@ import java.util.Objects;
 import java.util.TreeMap;
 
 /**
- * Created by guilhem on 30/10/16.
+ * The ShopTicApplication. Used as a controller (Modèle d'Interfaçage de l'Application [Seeheim])
+ * Est le singleton, est accessible de (presque) partout dans l'application
  */
 public class ShopTicApplication extends Application {
 
     private static final String LISTS_SAVE_FILE = "lists_file";
     private static final String PRODUCT_SAVE_FILE = "product_file";
     private static final String LISTITEM_SAVE_FILE = "listitem_file";
+    /**
+     * Extra data code for Intent launched when a list is selected
+     */
     public static final String INTENT_MESSAGE_LIST = "com.example.nicolas.shoptic.LIST";
 
     private ArrayList<List> lists = null;
     private ArrayList<Product> products = null;
     private ArrayList<ListItem> listItems = null;
 
+    /**
+     * @return All the lists stored (if any)
+     */
     public ArrayList<List> getLists() {
         if (lists == null){
             try {
@@ -54,6 +61,11 @@ public class ShopTicApplication extends Application {
         return lists;
     }
 
+    /**
+     * Adds a list
+     * @param list list to add
+     * @return true if the list has been added, false if the same list is already present
+     */
     public boolean addList(List list){
         for (List l: getLists()){
             if (l.equals(list)){
@@ -65,9 +77,13 @@ public class ShopTicApplication extends Application {
         return true;
     }
 
+    /**
+     * Delete the list from the app at the position "position"
+     * @param position the position of the list to remove in the list : {@link #getLists getLists}
+     */
     public void deleteList(int position){
         ArrayList<Integer> positionToRemove = new ArrayList<>();
-        for (int i = 0; i < listItems.size(); i++){
+        for (int i = 0; i < getListItems().size(); i++){
             if (listItems.get(i).getList().getName().equals(lists.get(position).getName())){
                 positionToRemove.add(i);
             }
@@ -80,11 +96,14 @@ public class ShopTicApplication extends Application {
         saveLists();
     }
 
-    public void saveLists(){
-        FileOutputStream fos = null;
+    /**
+     * Save the list into a file (by Serialization)
+     */
+    private void saveLists(){
+        FileOutputStream fos;
         try {
             fos = getApplicationContext().openFileOutput(LISTS_SAVE_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream os = null;
+            ObjectOutputStream os;
             os = new ObjectOutputStream(fos);
             os.writeObject(lists);
             os.close();
@@ -94,6 +113,10 @@ public class ShopTicApplication extends Application {
         }
     }
 
+    /**
+     * Get all the products stored (if any), returns the default ones if none is saved
+     * @return The products of the app
+     */
     public ArrayList<Product> getProducts() {
         if (products == null){
             try {
@@ -119,6 +142,10 @@ public class ShopTicApplication extends Application {
         return products;
     }
 
+    /**
+     * Get all the associations between lists and products
+     * @return All the association betwwen lists and products
+     */
     public ArrayList<ListItem> getListItems() {
         if (listItems == null){
             try {
@@ -135,6 +162,11 @@ public class ShopTicApplication extends Application {
 
     }
 
+    /**
+     * Returns the associations from the list @param l
+     * @param l The list in which retrieve associations
+     * @return Associations linked to the list l
+     */
     public ArrayList<ListItem> getItemsInList(List l){
 
         ArrayList<ListItem> toReturn = new ArrayList<>();
@@ -146,6 +178,10 @@ public class ShopTicApplication extends Application {
         return toReturn;
     }
 
+    /**
+     * @param l The list in which retrieve products
+     * @return The products contained in list l
+     */
     public ArrayList<Product> getProductsInList(List l){
         ArrayList<Product> toReturn = new ArrayList<>();
         for (ListItem i: getItemsInList(l)){
@@ -155,6 +191,12 @@ public class ShopTicApplication extends Application {
         return toReturn;
     }
 
+    /**
+     * Checks if a product is in a list
+     * @param p product to check
+     * @param l list to search in for the product
+     * @return true if the product is in the list, else false
+     */
     public boolean isProductInList(Product p, List l){
         for (ListItem item: getItemsInList(l)){
             if (item.getProduct().equals(p)){
@@ -164,11 +206,22 @@ public class ShopTicApplication extends Application {
         return false;
     }
 
+    /**
+     * Adds a product to a list
+     * DOES NOT CHECK IF p IS ALREADY PRESENT IN l
+     * @param p product to add
+     * @param l the list in which the product has to be added
+     */
     public void addProductToList(Product p, List l){
         listItems.add(new ListItem(1, ListItem.ItemUnit.PIECE, p, l));
         saveListItems();
     }
 
+    /**
+     * Removes the product from a list
+     * @param p the product to remove
+     * @param l the list in which the product has to be removed
+     */
     public void removeProductFromList(Product p, List l){
         int positionToRemove = -1;
         for (int i = 0; i < getListItems().size(); i++){
@@ -185,11 +238,14 @@ public class ShopTicApplication extends Application {
         }
     }
 
+    /**
+     * Save all the associations product/list
+     */
     private void saveListItems(){
-        FileOutputStream fos = null;
+        FileOutputStream fos;
         try {
             fos = getApplicationContext().openFileOutput(LISTITEM_SAVE_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream os = null;
+            ObjectOutputStream os;
             os = new ObjectOutputStream(fos);
             os.writeObject(listItems);
             os.close();
@@ -199,13 +255,23 @@ public class ShopTicApplication extends Application {
         }
     }
 
+    /**
+     * Compute the size in pixels from the dps wanted
+     * @param dps size wanted in dps
+     * @return size in pixel
+     */
     public int getPixelsFromDPs(int dps){
         Resources r = this.getResources();
-        int px = (int) (TypedValue.applyDimension(
+        return (int) (TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dps, r.getDisplayMetrics()));
-        return px;
     }
 
+    /**
+     * Returns all the categories found into the products array mapped with the number of products
+     * in each categories
+     * @param products Products to found categories
+     * @return All the different categories found [category : number of item in it]
+     */
     public TreeMap<Category, Integer> getCategoriesFromItems(ArrayList<Product> products){
         TreeMap<Category, Integer> ret = new TreeMap<>();
 
@@ -219,6 +285,11 @@ public class ShopTicApplication extends Application {
         return ret;
     }
 
+    /**
+     * Sets a products as checked into a list
+     * @param p the product to mark as "bought"
+     * @param l the list in which checks the product
+     */
     public void toggleItemInList(Product p, List l){
         for (ListItem item: getItemsInList(l)){
             if (item.getProduct().equals(p)){
@@ -229,6 +300,12 @@ public class ShopTicApplication extends Application {
         }
     }
 
+    /**
+     * Checks if a product is checked in a list
+     * @param p the product to check if it is checked
+     * @param l the list
+     * @return true if the item is checked in the list. False if it is not OR IF IT IS NOT PRESENT IN THE LIST
+     */
     public boolean isItemChecked(Product p, List l){
         for (ListItem item: getItemsInList(l)){
             if (item.getProduct().equals(p)){
@@ -238,6 +315,12 @@ public class ShopTicApplication extends Application {
         return false;
     }
 
+    /**
+     * Returns a string that indicates the quantity of the product in a list
+     * @param p product to get the quantity
+     * @param l list in which the quantity has to be checked
+     * @return The string : "quantity units"
+     */
     public String getQuantityProductInList(Product p, List l){
         for (ListItem item: getItemsInList(l)){
             if (item.getProduct().equals(p)){
@@ -248,6 +331,12 @@ public class ShopTicApplication extends Application {
         return "";
     }
 
+    /**
+     * Returns only the quantity of a product in a list (without the unit)
+     * @param p the product
+     * @param l the list
+     * @return the quantity (without units)
+     */
     public int getIntQuantityProductInList(Product p, List l) {
         for (ListItem item: getItemsInList(l)){
             if (item.getProduct().equals(p)) {
@@ -257,6 +346,12 @@ public class ShopTicApplication extends Application {
         return 1;
     }
 
+    /**
+     * Returns the position of the units set for a product in a list. (the position in {@link #getAllQuantityUnits()})
+     * @param p the product to get the unit
+     * @param l the list
+     * @return the position of the quantity set in the list {@link #getAllQuantityUnits()}
+     */
     public int getPositionUnitsProductInList(Product p, List l){
         for (ListItem item: getItemsInList(l)){
             if (item.getProduct().equals(p)) {
@@ -266,6 +361,13 @@ public class ShopTicApplication extends Application {
         return 0;
     }
 
+    /**
+     * Set the quantity (and its unit) for a product in a list
+     * @param p the product to set the quantity
+     * @param l the list
+     * @param quantity the quantity
+     * @param unit must be in [PIECE, DIZAINE, LITRE, GRAMME, KILOGRAMME, PACK, PAQUET, DOUZAINE, BOUTEILLE]
+     */
     public void setQuantityProductInList(Product p, List l, int quantity, String unit){
         for (ListItem item: getItemsInList(l)){
             if (item.getProduct().equals(p)){
@@ -277,10 +379,19 @@ public class ShopTicApplication extends Application {
         }
     }
 
+    /**
+     *
+     * @param s the units, must be in [PIECE, DIZAINE, LITRE, GRAMME, KILOGRAMME, PACK, PAQUET, DOUZAINE, BOUTEILLE]
+     * @return the enum object from {@link com.example.nicolas.shoptic.core.ListItem.ItemUnit}
+     */
     private ListItem.ItemUnit getUnitFromString(String s){
         return ListItem.ItemUnit.values()[getAllQuantityUnits().indexOf(s.toLowerCase())];
     }
 
+
+    /**
+     * @return Returns all the quantity units available as a string array
+     */
     public ArrayList<String> getAllQuantityUnits(){
         ArrayList<String> toReturn = new ArrayList<>();
         for (ListItem.ItemUnit u: ListItem.ItemUnit.values()){

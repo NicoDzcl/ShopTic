@@ -8,4 +8,5 @@
     <string name="action_add_list">Ajouter une liste</string>
     <string name="search_title">Chercher</string>
     <string name="title_activity_list">ListActivity</string>
+    <string name="no_list_found">Vous n\'avez actuellement aucune liste de courses. Créez-en une en appuyant sur \'+\'.</string>
 </resources>
