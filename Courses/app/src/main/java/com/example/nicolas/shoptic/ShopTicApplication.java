@@ -349,7 +349,7 @@ public class ShopTicApplication extends Application {
             case HEBDO:
                 return 1000*60*60*24*7;
             case MONTHLY:
-                return 1000*60*60*24*7*30;
+                return 1000*60*60*24*30;
             case ANNUALLY:
                 return 1000*60*60*24*365;
             default:
