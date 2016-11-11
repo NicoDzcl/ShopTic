@@ -6,11 +6,4 @@
         android:icon="@drawable/ic_action_search"
         app:showAsAction="collapseActionView|always"
         android:actionViewClass="android.widget.SearchView" />
-
-    <item
-        android:id="@+id/action_add_list"
-        android:orderInCategory="100"
-        android:title="@string/action_add_list"
-        android:icon="@drawable/ic_action_add"
-        app:showAsAction="always" />
 </menu>
