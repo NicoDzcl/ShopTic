@@ -263,7 +263,6 @@ public class ShopTicApplication extends Application {
     public int getPositionUnitsProductInList(Product p, List l){
         for (ListItem item: getItemsInList(l)){
             if (item.getProduct().equals(p)) {
-                //TODO : a corriger (renvoie toujours 0)
                 return getAllQuantityUnits().indexOf(item.getQuantityUnits());
             }
         }

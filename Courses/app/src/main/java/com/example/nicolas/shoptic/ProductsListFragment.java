@@ -27,7 +27,7 @@ public class ProductsListFragment extends Fragment {
     ProductAdapter adapter;
 
     public interface IOnProductSelected {
-        void OnProductSelected(int position);
+        void OnProductSelected();
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ProductsListFragment extends Fragment {
                     application.addProductToList(application.getProducts().get(position), list);
                 }
                 adapter.notifyDataSetChanged();
-                mCallback.OnProductSelected(position);
+                mCallback.OnProductSelected();
             }
         });
         return v;
