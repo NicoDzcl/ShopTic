@@ -9,12 +9,14 @@ import android.os.Vibrator;
  * Created by nicolas on 10/11/16.
  */
 public class Receiver extends BroadcastReceiver {
+    ShopTicApplication application;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // Vibrate for 2 seconds
-        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(2000);
-        System.out.println("hd");
+        long time = 2000;
+        Vibrator vibrator =(Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(time);
+        application = (ShopTicApplication)  context.getApplicationContext();
+        application.createNotification();
     }
 }

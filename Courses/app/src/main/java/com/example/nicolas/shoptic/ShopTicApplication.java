@@ -1,11 +1,12 @@
 package com.example.nicolas.shoptic;
 
-import android.app.Activity;
 import android.app.Application;
-import android.content.ClipData;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
-import android.util.Log;
+import android.support.v7.app.NotificationCompat;
 import android.util.TypedValue;
 
 import com.example.nicolas.shoptic.core.Category;
@@ -14,18 +15,13 @@ import com.example.nicolas.shoptic.core.ListItem;
 import com.example.nicolas.shoptic.core.Product;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -292,6 +288,34 @@ public class ShopTicApplication extends Application {
         return toReturn;
     }
 
+    public void createNotification(){
+        NotificationCompat.Builder mBuilder =
+                (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_menu_share)
+                        .setContentTitle("ShopTic")
+                        .setContentText("Vous devez faire vos courses!");
+
+        Intent resultIntent = new Intent(this, Receiver.class);
+
+        // Because clicking the notification opens a new ("special") activity, there's
+        // no need to create an artificial back stack.
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        // Sets an ID for the notification
+        int mNotificationId = 1;
+// Gets an instance of the NotificationManager service
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+// Builds the notification and issues it.
+        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+
+    }
 
 
 }

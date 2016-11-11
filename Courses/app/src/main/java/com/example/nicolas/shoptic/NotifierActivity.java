@@ -2,19 +2,16 @@ package com.example.nicolas.shoptic;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -25,8 +22,8 @@ public class NotifierActivity extends AppCompatActivity implements
         View.OnClickListener {
 
     Button btnDatePicker, btnTimePicker, btnSave;
-    EditText txtDate, txtTime;
     private int mYear, mMonth, mDay, mHour, mMinute;
+    private int smYear, smMonth, smDay, smHour, smMinute;
     private String array_spinner[];
     private String array_spinner2[];
 
@@ -48,17 +45,14 @@ public class NotifierActivity extends AppCompatActivity implements
         ArrayAdapter adapter = new ArrayAdapter(this,
                 android.R.layout.simple_spinner_item, array_spinner);
         s.setAdapter(adapter);
-        Spinner s2 = (Spinner) findViewById(R.id.spinner2);
-        ArrayAdapter adapter2 = new ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, array_spinner2);
-        s2.setAdapter(adapter2);
+        //ArrayAdapter adapter2 = new ArrayAdapter(this,
+        //        android.R.layout.simple_spinner_item, array_spinner2);
+        //s2.setAdapter(adapter2);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
-
-
             @Override
             public void onClick(View arg0) {
-                affNotif();
+                createAlarm();
             }
         });
     }
@@ -84,6 +78,9 @@ public class NotifierActivity extends AppCompatActivity implements
                                               int monthOfYear, int dayOfMonth) {
 
                             btnDatePicker.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            smYear = year;
+                            smMonth = monthOfYear;
+                            smDay = dayOfMonth;
 
                         }
                     }, mYear, mMonth, mDay);
@@ -105,77 +102,27 @@ public class NotifierActivity extends AppCompatActivity implements
                                               int minute) {
 
                             btnTimePicker.setText(hourOfDay + ":" + minute);
+                            smHour = hourOfDay;
+                            smMinute = minute;
                         }
                     }, mHour, mMinute, false);
             timePickerDialog.show();
         }
     }
 
-    private final void createNotification(){
-        AlarmManager alarms = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-        NotificationCompat.Builder mBuilder =
-                (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_menu_share)
-                        .setContentTitle("ShopTic")
-                        .setContentText("Vous devez faire vos courses!");
+    private final void createAlarm(){
 
-        Intent resultIntent = new Intent(this, Receiver.class);
-
-        // Because clicking the notification opens a new ("special") activity, there's
-        // no need to create an artificial back stack.
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(
-                        this,
-                        0,
-                        resultIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-        // Sets an ID for the notification
-        int mNotificationId = 001;
-// Gets an instance of the NotificationManager service
-        NotificationManager mNotifyMgr =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-// Builds the notification and issues it.
-        mNotifyMgr.notify(mNotificationId, mBuilder.build());
-        alarms.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+5000, resultPendingIntent) ;
-
-
-
-    }
-    
-    public void affNotif(){
-        int seconds = 2;
-// Create an intent that will be wrapped in PendingIntent
+        AlarmManager alarmMgr = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, Receiver.class);
 
-// Create the pending intent and wrap our intent
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
-
-// Get the alarm manager service and schedule it to go off after 3s
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (seconds * 1000), pendingIntent);
-
-        Toast.makeText(this, "Alarm set in " + seconds + " seconds", Toast.LENGTH_LONG).show();
-
-    }
-
-    public void aff(){
-        AlarmManager alarmMgr = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this.getApplicationContext(), Receiver.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 0, intent, 0);
 
-// Set the alarm to start at 8:30 a.m.
+        // Set the alarm to start at the chosen time.
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 15);
-        calendar.set(Calendar.MINUTE, 3);
+        calendar.set(smYear, smMonth, smDay, smHour, smMinute);
 
-// setRepeating() lets you specify a precise custom interval--in this case,
-// 20 minutes.
-        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                1000 * 60 * 20, alarmIntent);
-
-
+        //alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 0, alarmIntent);
+        alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+        Toast.makeText(this, "Alarm programmée pour le" + smDay + "-" + (smMonth + 1) + "-" + smYear + " à " + smHour + ":" + smMinute, Toast.LENGTH_SHORT).show();
     }
 }
