@@ -128,19 +128,65 @@ public class ShopTicApplication extends Application {
                 fis.close();
             } catch (IOException|ClassNotFoundException e) {
                 products = new ArrayList<>();
-                products.add(new Product("Orange", 0., new Category("Alimentaire", false), false));
-                products.add(new Product("Citron", 0., new Category("Alimentaire", false), false));
-                products.add(new Product("Bière", 0., new Category("Alcool", false), false));
-                products.add(new Product("Vin Rouge", 0., new Category("Alcool", false), false));
-                products.add(new Product("Stylo", 0., new Category("Fourniture", false), false));
-                products.add(new Product("Gomme", 0., new Category("Fourniture", false), false));
-                products.add(new Product("Feutre", 0., new Category("Fourniture", false), false));
-                products.add(new Product("Assiette", 0., new Category("Vaisselle", false), false));
-                products.add(new Product("Frites", 0., new Category("Surgelé", false), false));
+                products.add(new Product("Orange", null, 0., new Category("Alimentaire", false), false));
+                products.add(new Product("Citron", null, 0., new Category("Alimentaire", false), false));
+                products.add(new Product("Bière", null, 0., new Category("Alcool", false), false));
+                products.add(new Product("Vin Rouge", null, 0., new Category("Alcool", false), false));
+                products.add(new Product("Stylo", null, 0., new Category("Fourniture", false), false));
+                products.add(new Product("Gomme", null, 0., new Category("Fourniture", false), false));
+                products.add(new Product("Feutre", null, 0., new Category("Fourniture", false), false));
+                products.add(new Product("Assiette", null, 0., new Category("Vaisselle", false), false));
+                products.add(new Product("Frites", null, 0., new Category("Surgelé", false), false));
             }
         }
         Collections.sort(products);
         return products;
+    }
+
+    public boolean addProduct(String name, String imageUri, String categoryName){
+        String categoryNameTrimmed = categoryName.trim();
+        String productsNameTrimmed = name.trim();
+        productsNameTrimmed = productsNameTrimmed.substring(0, 1).toUpperCase() + productsNameTrimmed.substring(1).toLowerCase();
+        Product p = new Product(productsNameTrimmed, imageUri, 0., new Category(categoryName.substring(0, 1).toUpperCase() + categoryNameTrimmed.substring(1), false), true);
+        if (isProductExist(p)){
+            return false;
+        }else{
+            products.add(p);
+            saveProducts();
+            return true;
+        }
+    }
+
+    private void saveProducts(){
+        FileOutputStream fos;
+        try {
+            fos = getApplicationContext().openFileOutput(PRODUCT_SAVE_FILE, Context.MODE_PRIVATE);
+            ObjectOutputStream os;
+            os = new ObjectOutputStream(fos);
+            os.writeObject(products);
+            os.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isProductExist(Product product){
+        return products.contains(product);
+    }
+
+
+
+
+    /**
+     * @return An list containing the names of all the products registered
+     */
+    public ArrayList<String> getAllProductsName(){
+        ArrayList<String> toReturn = new ArrayList<>();
+        for (Product p: getProducts()){
+            toReturn.add(p.getName());
+        }
+        return toReturn;
     }
 
     /**
@@ -209,13 +255,56 @@ public class ShopTicApplication extends Application {
 
     /**
      * Adds a product to a list
-     * DOES NOT CHECK IF p IS ALREADY PRESENT IN l
      * @param p product to add
      * @param l the list in which the product has to be added
      */
     public void addProductToList(Product p, List l){
-        listItems.add(new ListItem(1, ListItem.ItemUnit.PIECE, p, l));
-        saveListItems();
+        if (!isProductInList(p, l)){
+            listItems.add(new ListItem(1, ListItem.ItemUnit.PIECE, p, l));
+            saveListItems();
+        }
+
+    }
+
+    /**
+     * Adds a product to a list by its name. If the product is not found, does nothing
+     * @param productName The name of the product to add
+     * @param l the list
+     */
+    public void addProductToList(String productName, List l){
+        Product p = getProductFromName(productName);
+        if (p != null){
+            addProductToList(p, l);
+        }
+    }
+
+    /**
+     *
+     * @param name
+     * @return
+     */
+    private Product getProductFromName(String name){
+        for(Product p: getProducts()){
+            if (name.toLowerCase().equals(p.getName().toLowerCase())){
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<String> getAllCategoriesName(){
+        ArrayList<String> categoriesNames = new ArrayList<>();
+        for (Category c: getAllCategories()){
+            categoriesNames.add(c.getName());
+        }
+        return categoriesNames;
+    }
+
+    private ArrayList<Category> getAllCategories(){
+        ArrayList<Category> cat = new ArrayList<>();
+        cat.addAll(getCategoriesFromItems(getProducts()).keySet());
+        Collections.sort(cat);
+        return cat;
     }
 
     /**

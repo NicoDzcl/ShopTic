@@ -3,6 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/thumbnail_product"
+        android:padding="8dp"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_menu_products"/>
     <TextView
         android:id="@+id/quantity_product"
         android:layout_width="match_parent"
@@ -12,13 +20,6 @@
         android:textColor="@android:color/white"
         android:background="#55000000"
         android:textSize="12sp"/>
-    <ImageView
-        android:id="@+id/thumbnail_product"
-        android:padding="8dp"
-        android:scaleType="centerCrop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/ic_menu_products"/>
     <TextView
         android:id="@+id/title_product"
         android:layout_width="match_parent"

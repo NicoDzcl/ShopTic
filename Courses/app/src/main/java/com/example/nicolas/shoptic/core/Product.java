@@ -22,11 +22,12 @@ public class Product implements Serializable, Comparable<Product>{
      * @param category: Category of the product ("alimentaire", ...)
      * @param userDefined: True if the product has been created by the user and so is deletable
      */
-    public Product(String name, double price, Category category, boolean userDefined) {
+    public Product(String name, String imageUri, double price, Category category, boolean userDefined) {
         this.name = name;
         this.price = price;
         this.category = category;
         this.userDefined = userDefined;
+        this.imageUri = imageUri;
     }
 
     /**

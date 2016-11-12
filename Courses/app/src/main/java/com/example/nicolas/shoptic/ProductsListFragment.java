@@ -25,6 +25,9 @@ public class ProductsListFragment extends Fragment {
     List list;
     IOnProductSelected mCallback;
     ProductAdapter adapter;
+    GridView gridview;
+
+
 
     public interface IOnProductSelected {
         void OnProductSelected();
@@ -53,7 +56,7 @@ public class ProductsListFragment extends Fragment {
         list = (List) getArguments().getSerializable("list");
 
         View v = inflater.inflate(R.layout.fragment_productslist, container, false);
-        final GridView gridview = (GridView) v.findViewById(R.id.gridview_product);
+        gridview = (GridView) v.findViewById(R.id.gridview_product);
         adapter = new ProductAdapter(getContext(), 0, application.getProducts(), list, false);
         gridview.setAdapter(adapter);
 
@@ -77,6 +80,14 @@ public class ProductsListFragment extends Fragment {
         });
         return v;
     }
+
+    public void refreshAdapter() {
+        if (gridview != null){
+            adapter = new ProductAdapter(getContext(), 0, application.getProducts(), list, false);
+            gridview.setAdapter(adapter);
+        }
+    }
+
 
 }
 
