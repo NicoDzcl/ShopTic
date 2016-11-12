@@ -9,4 +9,8 @@
     <string name="search_title">Chercher</string>
     <string name="title_activity_list">ListActivity</string>
     <string name="no_list_found">Vous n\'avez actuellement aucune liste de courses. Créez-en une en appuyant sur \'+\'.</string>
+    <string name="dialog_add_list_name_hint">Ma nouvelle liste</string>
+    <string name="dialog_add_list_image_description">Icone de la liste</string>
+    <string name="list_view_icon_description">Icone de la liste</string>
+    <string name="list_view_action_button_description">Plus d\'options</string>
 </resources>

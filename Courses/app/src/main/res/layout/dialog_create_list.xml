@@ -5,19 +5,22 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:scaleType="centerCrop"
+        android:layout_margin="10dp"
         android:id="@+id/dialog_image_list"
-        android:src="@drawable/ic_lists_list"/>
+        android:src="@drawable/ic_lists_list"
+        android:contentDescription="@string/dialog_add_list_image_description" />
     <EditText
         android:id="@+id/dialog_list_name"
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif"
-        android:hint="Ma nouvelle liste"/>
+        android:hint="@string/dialog_add_list_name_hint"/>
 </LinearLayout>
