@@ -13,4 +13,6 @@
     <string name="dialog_add_list_image_description">Icone de la liste</string>
     <string name="list_view_icon_description">Icone de la liste</string>
     <string name="list_view_action_button_description">Plus d\'options</string>
+
+    <string name="app_moto">Faire les courses n\'est plus une corvée !</string>
 </resources>

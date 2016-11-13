@@ -171,6 +171,31 @@ public class ShopTicApplication extends Application {
         }
     }
 
+    public void setProductPrice(Product p, double price){
+        p.setPrice(price);
+        saveProducts();
+    }
+
+    public void setProductImage(Product p, String uri){
+        p.setImageUri(uri);
+        saveProducts();
+    }
+
+    public void deleteProduct(Product p){
+        ArrayList<Integer> positionToRemove = new ArrayList<>();
+        for (int i = 0; i < getListItems().size(); i++){
+            if (listItems.get(i).getProduct().equals(p)){
+                positionToRemove.add(i);
+            }
+        }
+        for (Integer i: positionToRemove){
+            listItems.remove((int)i);
+        }
+        products.remove(p);
+        saveListItems();
+        saveProducts();
+    }
+
     public boolean isProductExist(Product product){
         return products.contains(product);
     }
@@ -187,6 +212,10 @@ public class ShopTicApplication extends Application {
             toReturn.add(p.getName());
         }
         return toReturn;
+    }
+
+    public double getProductPrice(Product product){
+        return product.getPrice();
     }
 
     /**
