@@ -493,7 +493,7 @@ public class ShopTicApplication extends Application {
     public void createNotification(String strContent){
         NotificationCompat.Builder mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_menu_share)
+                        .setSmallIcon(R.drawable.shoptic)
                         .setContentTitle("ShopTic")
                         .setContentText(strContent);
 

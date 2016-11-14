@@ -93,6 +93,15 @@ public class ListAdapter extends ArrayAdapter<List> {
         app.startActivity(intent);
     }
 
+    public void onGeoNotifier(int position) {
+        final List item = app.getLists().get(position);
+        Activity activity = (Activity) getContext();
+        Intent intent = new Intent(activity, MapsActivity.class);
+        intent.putExtra(ShopTicApplication.INTENT_MESSAGE_LIST, item);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        app.startActivity(intent);
+    }
+
 
     public void showPopup(final View view, final int position) {
 
@@ -123,27 +132,10 @@ public class ListAdapter extends ArrayAdapter<List> {
                         dialog.show();
                         break;
                     case R.id.list_menu_reminder:
-                        CharSequence[] array = {"Date", "E-mail"};
                         onNotifier(position);
-
-                        /*AlertDialog.Builder notifier = new AlertDialog.Builder(getContext());
-
-                        notifier.setTitle("Choisir une méthode de notification")
-                                .setItems(array, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if(which == 0){ //case date
-                                            onNotifier();
-                                        }
-                                        if(which == 1){ //case E-mail
-                                            System.out.println(which);
-                                        }
-                                    }
-                                });
-
-                        AlertDialog dialog2 = notifier.create();
-                        dialog2.show();*/
                         break;
+                    case R.id.list_menu_geo_reminder:
+                        onGeoNotifier(position);
 
                 }
                 return false;
