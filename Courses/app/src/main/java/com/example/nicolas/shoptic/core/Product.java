@@ -91,6 +91,10 @@ public class Product implements Serializable, Comparable<Product>{
         return imageUri;
     }
 
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null){

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+<include
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    layout="@layout/fragment_productslist" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_new_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_action_add"/>
+
+</android.support.design.widget.CoordinatorLayout>
+

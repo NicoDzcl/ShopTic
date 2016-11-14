@@ -9,7 +9,8 @@
         <item
             android:id="@+id/nav_categories"
             android:icon="@drawable/ic_categories"
-            android:title="Catégories" />
+            android:title="Catégories"
+            android:enabled="false"/>
         <item
             android:id="@+id/nav_products"
             android:icon="@drawable/ic_menu_products"
@@ -17,20 +18,8 @@
         <item
             android:id="@+id/nav_fidelity_cards"
             android:icon="@drawable/ic_menu_fidelity_cards"
-            android:title="Cartes de fidélité" />
+            android:title="Cartes de fidélité"
+            android:enabled="false"/>
     </group>
-
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
 
 </menu>

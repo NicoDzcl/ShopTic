@@ -112,26 +112,35 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Class fragmentClass = null;
 
         if (id == R.id.nav_listslist) {
-            // Handle the camera action
+            fragmentClass = ListsListFragment.class;
         } else if (id == R.id.nav_categories) {
-
+            fragmentClass = null;
         } else if (id == R.id.nav_products) {
-
+            fragmentClass = ProductsFragment.class;
         } else if (id == R.id.nav_fidelity_cards) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            fragmentClass = null;
         }
 
+        try {
+            if (fragmentClass != null && !openedFragment.getClass().equals(fragmentClass)) {
+                openedFragment = (Fragment)fragmentClass.newInstance();
+            }
+        } catch (InstantiationException|IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        fragmentManager.beginTransaction().replace(R.id.flContent, openedFragment).commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer != null) {
             drawer.closeDrawer(GravityCompat.START);
         }
+
         return true;
+
     }
 
 }
