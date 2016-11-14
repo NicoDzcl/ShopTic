@@ -53,7 +53,7 @@ public class NotifierActivity extends AppCompatActivity implements
         System.out.println(list.getAlarm());
         if (list.getAlarm() != null) {
             if (list.getAlarm()) {
-                txtIsAlarm.setText("Une alarme est programmée pour le " + list.getReminderDate().toString() + "avec pour récurence " + app.getTextFromFrequency(list.getFrequency()));
+                //txtIsAlarm.setText("Une alarme est programmée pour le " + list.getReminderDate().toString() + "avec pour récurence " + app.getTextFromFrequency(list.getFrequency()));
             }
         }
             else {

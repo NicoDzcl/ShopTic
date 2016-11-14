@@ -65,9 +65,9 @@ public class LocationService extends Service {
             Toast.makeText(getBaseContext(),"Pas d'accès à la location", Toast.LENGTH_LONG).show();
             return;
         }
-        locationMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60,
-                500, onLocationChange);
-        locationMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60, 500,
+        locationMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,
+                0, onLocationChange);
+        locationMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
                 onLocationChange);
 
         super.onCreate();

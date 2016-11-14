@@ -616,7 +616,7 @@ public class ShopTicApplication extends Application {
         for (List list: getLists()){
             System.out.println("lat :" + list.getLat() + " lon :" + list.getLng());
             double dist = distance(lat, list.getLat(), lon, list.getLng());
-            if (dist<500){
+            if (dist<5000){
                 createNotification("Vous etes prêt de la localisation pour allez faire la liste " + list.getName());
                 long time = 2000;
                 Vibrator vibrator =(Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
