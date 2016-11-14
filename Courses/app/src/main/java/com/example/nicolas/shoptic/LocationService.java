@@ -32,7 +32,7 @@ public class LocationService extends Service {
 
             Double latitude = location.getLatitude();
             Double longitude = location.getLongitude();
-            
+
         }
     };
 
@@ -58,18 +58,14 @@ public class LocationService extends Service {
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             Toast.makeText(getBaseContext(),
-                    "Pas d'accès",
+                    "Pas d'accès à la location",
                     Toast.LENGTH_LONG).show();
             return;
         }
-        Toast.makeText(getBaseContext(),
-                "accès",
-                Toast.LENGTH_LONG).show();
-        locationMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,
-                0, onLocationChange);
-        locationMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
+        locationMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60,
+                500, onLocationChange);
+        locationMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60, 500,
                 onLocationChange);
-        System.out.println("Creation service !Après");
 
         super.onCreate();
     }

@@ -587,4 +587,10 @@ public class ShopTicApplication extends Application {
         }
     }
 
+    public void changeAlertState(List list, Boolean b){
+        list.setAlarm(b);
+        saveLists();
+    }
+
+
 }

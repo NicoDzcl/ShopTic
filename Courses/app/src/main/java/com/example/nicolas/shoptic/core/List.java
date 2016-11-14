@@ -14,7 +14,7 @@ public class List implements Serializable{
     private Calendar reminderDate;
     private Frequency frequency;
     private int identifier;
-    private String isAlarm = "false";
+    private Boolean isAlarm;
 
     /**
      * constructor
@@ -96,12 +96,11 @@ public class List implements Serializable{
         return identifier;
     }
 
-    public String getAlarm() {
+    public Boolean getAlarm() {
         return isAlarm;
     }
 
-    public void setAlarm(String alarm) {
+    public void setAlarm(Boolean alarm) {
         isAlarm = alarm;
-        System.out.println(alarm);
     }
 }
