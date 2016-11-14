@@ -28,6 +28,7 @@ public class ListAdapter extends ArrayAdapter<List> {
 
     ShopTicApplication app;
 
+
     public ListAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
         app = (ShopTicApplication) context.getApplicationContext();
@@ -94,6 +95,16 @@ public class ListAdapter extends ArrayAdapter<List> {
     }
 
     public void onGeoNotifier(int position) {
+
+        //((MainActivity) getContext()).startPlacePicker(getItem(position));
+        /*final List item = app.getLists().get(position);
+        Activity activity = (Activity) getContext();
+        Intent intent = new Intent(activity, MapsActivity.class);
+        intent.putExtra(ShopTicApplication.INTENT_MESSAGE_LIST, item);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        app.startActivity(intent);*/
+
+        
         final List item = app.getLists().get(position);
         Activity activity = (Activity) getContext();
         Intent intent = new Intent(activity, MapsActivity.class);
@@ -101,6 +112,8 @@ public class ListAdapter extends ArrayAdapter<List> {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         app.startActivity(intent);
     }
+
+
 
 
     public void showPopup(final View view, final int position) {

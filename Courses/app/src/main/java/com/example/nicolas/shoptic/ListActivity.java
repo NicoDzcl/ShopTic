@@ -19,11 +19,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.nicolas.shoptic.core.List;
-import com.example.nicolas.shoptic.core.Product;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.ArrayList;
 
@@ -219,6 +220,8 @@ public class ListActivity extends AppCompatActivity implements ProductsListFragm
             }
         }
     }
+
+
 }
 
 

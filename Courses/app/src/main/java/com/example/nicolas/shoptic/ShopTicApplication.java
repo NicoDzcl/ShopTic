@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Vibrator;
 import android.support.v7.app.NotificationCompat;
 import android.util.TypedValue;
 
@@ -14,6 +15,7 @@ import com.example.nicolas.shoptic.core.Frequency;
 import com.example.nicolas.shoptic.core.List;
 import com.example.nicolas.shoptic.core.ListItem;
 import com.example.nicolas.shoptic.core.Product;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -587,9 +589,61 @@ public class ShopTicApplication extends Application {
         }
     }
 
-    public void changeAlertState(List list, Boolean b){
-        list.setAlarm(b);
+    public void changeAlertState(List list, Boolean b) {
+        for (List lst : getLists()) {
+            if (lst.getName().equals(list.getName())) {
+                lst.setAlarm(b);
+                saveListItems();
+                break;
+            }
+        }
         saveLists();
+    }
+
+    public void setLocation(List list, LatLng latlng){
+        for (List lst: getLists()){
+            if (lst.getName().equals(list.getName())){
+                lst.setLat(latlng.latitude);
+                lst.setLng(latlng.longitude);
+                saveListItems();
+                break;
+            }
+        }
+        saveLists();
+    }
+
+    public void onLocationChange(double lat, double lon){
+        for (List list: getLists()){
+            System.out.println("lat :" + list.getLat() + " lon :" + list.getLng());
+            double dist = distance(lat, list.getLat(), lon, list.getLng());
+            if (dist<500){
+                createNotification("Vous etes prêt de la localisation pour allez faire la liste " + list.getName());
+                long time = 2000;
+                Vibrator vibrator =(Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                vibrator.vibrate(time);
+
+            }
+
+        }
+
+    }
+
+    public static double distance(double lat1, double lat2, double lon1, double lon2) {
+
+        final int R = 6371; // Radius of the earth
+
+        Double latDistance = Math.toRadians(lat2 - lat1);
+        Double lonDistance = Math.toRadians(lon2 - lon1);
+        Double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c * 1000; // convert to meters
+
+
+        distance = Math.pow(distance, 2);
+
+        return Math.sqrt(distance);
     }
 
 

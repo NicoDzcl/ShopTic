@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "759584420837",
+    "project_id": "firebase-courses"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759584420837:android:16af20d56debd846",
+        "android_client_info": {
+          "package_name": "com.example.nicolas.shoptic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "759584420837-lt5fu9k9ghmpmidbg6kftldi6h5j35b2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nicolas.shoptic",
+            "certificate_hash": "57FDA3737E7A7D8451F008167EDA8362E09A36BC"
+          }
+        },
+        {
+          "client_id": "759584420837-0k9g7pqfao84m8hbckbmrgglefqmnvj1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCz4uYxCG5JPKTbstmMza9mxIySLtkk65c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -15,6 +15,7 @@ public class List implements Serializable{
     private Frequency frequency;
     private int identifier;
     private Boolean isAlarm;
+    private double lat,lng;
 
     /**
      * constructor
@@ -102,5 +103,21 @@ public class List implements Serializable{
 
     public void setAlarm(Boolean alarm) {
         isAlarm = alarm;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 }

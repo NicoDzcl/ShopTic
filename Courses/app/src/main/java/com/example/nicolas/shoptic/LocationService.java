@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 public class LocationService extends Service {
     private LocationManager locationMgr = null;
+    private ShopTicApplication app;
+
     private LocationListener onLocationChange = new LocationListener() {
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -32,6 +34,8 @@ public class LocationService extends Service {
 
             Double latitude = location.getLatitude();
             Double longitude = location.getLongitude();
+            app.onLocationChange(latitude,longitude);
+
 
         }
     };
@@ -44,6 +48,7 @@ public class LocationService extends Service {
     @Override
     public void onCreate() {
         System.out.println("Creation service !");
+        app = (ShopTicApplication) getApplicationContext();
 
         locationMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -57,9 +62,7 @@ public class LocationService extends Service {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            Toast.makeText(getBaseContext(),
-                    "Pas d'accès à la location",
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(),"Pas d'accès à la location", Toast.LENGTH_LONG).show();
             return;
         }
         locationMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60,
